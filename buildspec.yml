@@ -1,0 +1,14 @@
+version: 0.1
+
+on:
+  push:
+    branches: [dev]
+  #pull_request:
+  #branches: [ dev ]
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+  build:
+    commands:

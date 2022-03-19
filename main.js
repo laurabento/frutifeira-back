@@ -1,6 +1,11 @@
 const express = require("express"); //Import the express dependency
 const app = express(); //Instantiate an express app, the main work horse of this server
 const port = 8000; //Save the port number where your server will be listening
+const fs = require("fs");
+const YAML = require("js-yaml");
+
+const raw = fs.readFileSync("buildspec.yaml");
+const data = YAML.safeLoad(raw);
 
 //Idiomatic expression in express to route and respond to a client request
 app.get("/", (req, res) => {
