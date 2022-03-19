@@ -20,8 +20,12 @@
 // });
 
 exports.handler = async (event) => {
+  const response = {};
+
   if (event.httpMethod == "GET") {
-    console.log("teste get");
+    response.statusCode = 200;
+    response.body = JSON.stringify("Hello dev");
   }
+
   return response;
 };
