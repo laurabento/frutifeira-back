@@ -1,7 +1,7 @@
 import feirantes from "./routes/feirantes";
-// const express = require("express"); //Import the express dependency
-// const app = express(); //Instantiate an express app, the main work horse of this server
-// const port = 8000; //Save the port number where your server will be listening
+const express = require("express"); //Import the express dependency
+const app = express(); //Instantiate an express app, the main work horse of this server
+//const port = 8000; //Save the port number where your server will be listening
 // const fs = require("fs");
 // const YAML = require("js-yaml");
 
@@ -33,7 +33,9 @@ exports.handler = async (event) => {
     }
   } else if (event.path == "/feirantes") {
     if (event.httpMethod == "GET") {
-      response.body = feirantes.get();
+      app.get("/feirantes", function (req, res) {
+        res.json();
+      });
     }
     response.statusCode = 200;
   } else {
