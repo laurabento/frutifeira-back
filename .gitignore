@@ -2,6 +2,7 @@
 node_modules/.bin/js-yaml
 node_modules/.bin/js-yaml.cmd
 node_modules/.bin/js-yaml.ps1
+node_modules/.package-lock.json
 node_modules/argparse/argparse.js
 node_modules/argparse/CHANGELOG.md
 node_modules/argparse/lib/sub.js
