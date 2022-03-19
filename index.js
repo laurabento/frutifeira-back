@@ -20,10 +20,15 @@
 // });
 
 exports.handler = async (event) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify(event),
-  };
+  const response = {};
+
+  if (event.httpMethod == "GET") {
+    event.statusCode = 200;
+    event.body = "Teste Sucedido";
+  } else {
+    event.statusCode = 400;
+    event.body = "Teste Falho";
+  }
 
   return response;
 };
