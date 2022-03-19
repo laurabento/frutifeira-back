@@ -23,11 +23,11 @@ exports.handler = async (event) => {
   const response = {};
 
   if (event.httpMethod == "GET") {
-    event.statusCode = 200;
-    event.body = "Teste Sucedido";
+    response.statusCode = 200;
+    response.body = "Teste Sucedido";
   } else {
-    event.statusCode = 400;
-    event.body = "Teste Falho";
+    response.statusCode = 400;
+    response.body = "Teste Falho";
   }
 
   return response;
