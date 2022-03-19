@@ -1,3 +1,4 @@
+import feirantes from "./routes/feirantes";
 // const express = require("express"); //Import the express dependency
 // const app = express(); //Instantiate an express app, the main work horse of this server
 // const port = 8000; //Save the port number where your server will be listening
@@ -31,8 +32,10 @@ exports.handler = async (event) => {
       response.body = "Teste Falho";
     }
   } else if (event.path == "/feirantes") {
+    if (event.httpMethod == "GET") {
+      response.body = feirantes.get();
+    }
     response.statusCode = 200;
-    response.body = "Teste Feirantes";
   } else {
     response.statusCode = 400;
     response.body = "Teste Falho";
