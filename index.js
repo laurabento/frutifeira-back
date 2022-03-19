@@ -20,11 +20,10 @@
 // });
 
 exports.handler = async (event) => {
-  // const obj = JSON.parse(event);
-
-  const response = {};
-
-  response.body = JSON.stringify(event);
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify(event),
+  };
 
   return response;
 };
