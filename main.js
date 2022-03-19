@@ -1,11 +1,11 @@
 const express = require("express"); //Import the express dependency
 const app = express(); //Instantiate an express app, the main work horse of this server
-const usuarios    = require("./routes/usuario");
-const produtos    = require("./routes/produto");
-const feiras      = require("./routes/feira");
-const feirantes   = require("./routes/feirantes");
-const condominios = require("./routes/condominios");
-const pedidos     = require("./routes/pedido");
+const usuarios    = require("./app/routes/usuario");
+const produtos    = require("./app/routes/produto");
+const feiras      = require("./app/routes/feira");
+const feirantes   = require("./app/routes/feirantes");
+const condominios = require("./app/routes/condominios");
+const pedidos     = require("./app/routes/pedido");
 const port = 3000; //Save the port number where your server will be listening
 
 app.use(express.json());
