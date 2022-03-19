@@ -24,7 +24,10 @@ exports.handler = async (event) => {
 
   const response = {};
 
-  if (event.body == "a") {
+  if (
+    event.body ==
+    '{"name":"Laranja","description":"","img":"","price":1.4,"type":"fruta","stand":"2"}'
+  ) {
     response.statusCode = 200;
     response.body = JSON.stringify("Hello dev");
   } else {
