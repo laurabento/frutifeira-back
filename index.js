@@ -27,5 +27,5 @@ exports.handler = async (event) => {
     response.body = JSON.stringify("Hello dev");
   }
 
-  return response.body;
+  return event;
 };
