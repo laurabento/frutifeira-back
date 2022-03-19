@@ -9,12 +9,12 @@ const pedidos     = require("./routes/pedido");
 const port = 3000; //Save the port number where your server will be listening
 
 app.use(express.json());
-app.use("/api/v1.0/usuarios/", usuarios);
-app.use("/api/v1.0/produtos/", produtos);
-app.use("/api/v1.0/feiras/", feiras);
-app.use("/api/v1.0/feirantes/", feirantes);
-app.use("/api/v1.0/condominios/", condominios);
-app.use("/api/v1.0/pedidos/", pedidos);
+app.use("/api/v1.0/users/", usuarios);
+app.use("/api/v1.0/products/", produtos);
+app.use("/api/v1.0/stands/", feiras);
+app.use("/api/v1.0/marketvendors/", feirantes);
+app.use("/api/v1.0/condominium/", condominios);
+app.use("/api/v1.0/orders/", pedidos);
 
 //Idiomatic expression in express to route and respond to a client request
 app.get("/", (req, res) => {
