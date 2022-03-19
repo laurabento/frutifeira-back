@@ -22,9 +22,17 @@
 exports.handler = async (event) => {
   const response = {};
 
-  if (event.httpMethod == "GET") {
+  if (event.path == "/") {
+    if (event.httpMethod == "GET") {
+      response.statusCode = 200;
+      response.body = "Teste Sucedido";
+    } else {
+      response.statusCode = 400;
+      response.body = "Teste Falho";
+    }
+  } else if (event.path == "feirantes") {
     response.statusCode = 200;
-    response.body = "Teste Sucedido";
+    response.body = "Teste Feirantes";
   } else {
     response.statusCode = 400;
     response.body = "Teste Falho";
