@@ -10,7 +10,7 @@ phases:
   install:
     runtime-versions:
       nodejs: 14.x
-  pre-build:
+  pre_build:
     commands:
       - echo "npm"
       - npm install
