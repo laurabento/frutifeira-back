@@ -22,7 +22,7 @@
 exports.handler = async (event) => {
   const response = {
     statusCode: 200,
-    body: JSON.stringify("Hello"),
+    body: JSON.stringify("Hello dev"),
   };
   return response;
 };
