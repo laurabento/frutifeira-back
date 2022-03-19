@@ -25,7 +25,10 @@ exports.handler = async (event) => {
   if (event.httpMethod == "GET") {
     response.statusCode = 200;
     response.body = JSON.stringify("Hello dev");
+  } else {
+    response.statusCode = 400;
+    response.body = JSON.stringify("deu ruim");
   }
 
-  return event;
+  return response;
 };
