@@ -1,4 +1,4 @@
-version: 0.1
+version: 0.2
 
 on:
   push:
@@ -9,6 +9,14 @@ on:
 phases:
   install:
     runtime-versions:
-      nodejs: 14
+      nodejs: 14.x
+  pre-build:
+    commands:
+      - echo "npm"
+      - npm install
   build:
     commands:
+      - echo "npm init"
+      - npm init
+      - echo "npm express"
+      - npm i -s express
