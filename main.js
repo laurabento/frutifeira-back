@@ -1,6 +1,20 @@
 const express = require("express"); //Import the express dependency
 const app = express(); //Instantiate an express app, the main work horse of this server
-const port = 8000; //Save the port number where your server will be listening
+const usuarios    = require("./routes/usuario");
+const produtos    = require("./routes/produto");
+const feiras      = require("./routes/feira");
+const feirantes   = require("./routes/feirantes");
+const condominios = require("./routes/condominios");
+const pedidos     = require("./routes/pedido");
+const port = 3000; //Save the port number where your server will be listening
+
+app.use(express.json());
+app.use("/api/v1.0/usuarios/", usuarios);
+app.use("/api/v1.0/produtos/", produtos);
+app.use("/api/v1.0/feiras/", feiras);
+app.use("/api/v1.0/feirantes/", feirantes);
+app.use("/api/v1.0/condominios/", condominios);
+app.use("/api/v1.0/pedidos/", pedidos);
 
 //Idiomatic expression in express to route and respond to a client request
 app.get("/", (req, res) => {
