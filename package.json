@@ -20,5 +20,6 @@
   "bugs": {
     "url": "https://github.com/laurabento/frutifeira-back/issues"
   },
-  "homepage": "https://github.com/laurabento/frutifeira-back#readme"
+  "homepage": "https://github.com/laurabento/frutifeira-back#readme",
+  "devDependencies": {}
 }
