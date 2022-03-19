@@ -30,7 +30,7 @@ exports.handler = async (event) => {
       response.statusCode = 400;
       response.body = "Teste Falho";
     }
-  } else if (event.path == "feirantes") {
+  } else if (event.path == "/feirantes") {
     response.statusCode = 200;
     response.body = "Teste Feirantes";
   } else {
