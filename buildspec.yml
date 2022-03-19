@@ -17,6 +17,6 @@ phases:
   build:
     commands:
       - echo "npm init"
-      - npm init
+      - npm init -y
       - echo "npm express"
       - npm i -s express
