@@ -22,12 +22,12 @@
 exports.handler = async (event) => {
   const response = {};
 
-  if (event.httpMethod == "GET") {
+  if (event.httpmethod == "GET") {
     response.statusCode = 200;
     response.body = JSON.stringify("Hello dev");
   } else {
     response.statusCode = 400;
-    response.body = JSON.stringify("deu ruim");
+    response.body = JSON.stringify(event);
   }
 
   return response;
