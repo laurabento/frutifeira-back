@@ -22,10 +22,10 @@
 exports.handler = async (event) => {
   const response = {};
 
-  if (event.requestContext.httpMethod == "GET") {
+  if (event.httpMethod == "GET") {
     response.statusCode = 200;
     response.body = JSON.stringify("Hello dev");
   }
 
-  return response;
+  return response.body;
 };
