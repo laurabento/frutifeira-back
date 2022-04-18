@@ -21,8 +21,10 @@ Através de um site responsivo, o condômino poderá escolher em qual dispositiv
 
 ## 💾💻 Instalação
 1. Abra o projeto no Visual Studio Code
-2. Execute o comando _npm install_
-3. Execute o comando _npm run serve_
+2. Execute o comando
+```npm install```
+3. Execute o comando
+``` npm run serve ```
 
 ## 👨‍💻 👩‍💻 Desenvolvedores
 [<img src="https://avatars.githubusercontent.com/u/71194171?s=400&u=071f7791bb03f8e102d835bdb9c2f0d3d24e8a34&v=" width=115 > <br> <sub> Isabelle Okuma </sub>](https://github.com/isabelleokuma) | [<img src="https://avatars.githubusercontent.com/u/54412527?s=400&u=071f7791bb03f8e102d835bdb9c2f0d3d24e8a34&v=" width=115 > <br> <sub> Laura Bento </sub>](https://github.com/laurabento) | [<img src="https://avatars.githubusercontent.com/u/71193719?s=400&u=071f7791bb03f8e102d835bdb9c2f0d3d24e8a34&v=" width=115 > <br> <sub> Maria Akamine </sub>](https://github.com/mariagabs) | [<img src="https://avatars.githubusercontent.com/u/56551507?s=400&u=071f7791bb03f8e102d835bdb9c2f0d3d24e8a34&v=" width=115 > <br> <sub> Raphael Konichi </sub>](https://github.com/raphaelkonichi) |
