@@ -1,6 +1,6 @@
 <h1 align="center">Frutifeira 🍎</h1>
 
-> <h6>Junção das palavras <b>frutífera</b> e <b>feira</b>, é um projeto do qual esperamos bons frutos (em todos os sentidos)</h6>
+>Junção das palavras <b>frutífera</b> e <b>feira</b>, é um projeto do qual esperamos bons frutos (em todos os sentidos)
 
 Um programa idealizado para feiras de condomínio com o intuito de facilitar tanto a compra quanto a venda, além da organização da feira em si. 
 
@@ -21,12 +21,14 @@ Através de um site responsivo, o condômino poderá escolher em qual dispositiv
 
 ## 💾💻 Instalação
 1. Abra o projeto no Visual Studio Code
-2. Execute o comando
-```npm install```
-3. Execute o comando
-``` npm run serve ```
+2. Execute os comandos
+``` bash
+npm install 
+node main.js
+```
 
-## 👨‍💻 👩‍💻 Desenvolvedores
+
+## 👨‍💻👩‍💻 Desenvolvedores
 [<img src="https://avatars.githubusercontent.com/u/71194171?s=400&u=071f7791bb03f8e102d835bdb9c2f0d3d24e8a34&v=" width=115 > <br> <sub> Isabelle Okuma </sub>](https://github.com/isabelleokuma) | [<img src="https://avatars.githubusercontent.com/u/54412527?s=400&u=071f7791bb03f8e102d835bdb9c2f0d3d24e8a34&v=" width=115 > <br> <sub> Laura Bento </sub>](https://github.com/laurabento) | [<img src="https://avatars.githubusercontent.com/u/71193719?s=400&u=071f7791bb03f8e102d835bdb9c2f0d3d24e8a34&v=" width=115 > <br> <sub> Maria Akamine </sub>](https://github.com/mariagabs) | [<img src="https://avatars.githubusercontent.com/u/56551507?s=400&u=071f7791bb03f8e102d835bdb9c2f0d3d24e8a34&v=" width=115 > <br> <sub> Raphael Konichi </sub>](https://github.com/raphaelkonichi) |
 | :---: | :---: | :---: | :---: | 
 
