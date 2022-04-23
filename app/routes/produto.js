@@ -1,92 +1,119 @@
 const express = require('express');
 let router = express.Router();
-
-const produtos = [
-    {
-        "name":"Banana",
-        "description":"",
-        "img":"",
-        "price": 0.4,
-        "type": "fruta",
-        "stand": "1"
-    },
-    {
-        "name":"Melancia",
-        "description":"",
-        "img":"",
-        "price": 8.5,
-        "type": "fruta",
-        "stand": "2"
-    },
-    {
-        "name":"Uva",
-        "description":"",
-        "img":"",
-        "price": 12.5,
-        "type": "fruta",
-        "stand": "3"
-    },
-    {
-        "name":"Alface",
-        "description":"",
-        "img":"",
-        "price": 1.0,
-        "type": "verdura",
-        "stand": "2"
-    }
-];
+const Product = require('../domain/produto/Product');
 
 router
-    .route("/:index")
-    .get((req, res) => {
-        const { index } = req.params;
-        return res.json(produtos[index]);
+    .route("/:id")
+    .get( async (req, res) => {
+        const id = req.params.id;
+        try {
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                const prod = await Product.findOne({_id: id});
+                if (!prod) {
+                    res.status(404).json({ error: "Produto não encontrado!"});
+                    return;
+                }
+                res.status(200).json(prod);
+            } else {
+                res.status(404).json({ error: "Id do produto inválido!"});
+                return;
+            }       
+        } catch (error) {
+            console.log(error);
+        }
     })
-    .put((req, res) => {
-        const { index } = req.params;
-        produtos[index] = req.body;
-        return res.json(produtos);
+    .patch( async (req, res) => {
+        const id = req.params.id;
+        const { name, description, img, price, type, stand } = req.body;
+        const prod = { name, description, img, price, type, stand };
+        try {
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                const updatedProd = await Product.updatedOne({_id: id}, prod);
+                if (updatedProd.matchedCount === 0) {
+                    res.status(422).json({ error: "Produto não encontrado!" });
+                    return;
+                }
+                res.status(200).json(prod);
+            } else {
+                res.status(404).json({ error: "Id do produto inválido!" });
+                return;
+            }       
+        } catch (error) {
+            console.log(error);
+        }
     })
-    .delete((req, res) => {
-        const { index } = req.params;    
-        produtos.splice(index, 1);
-        return res.json({ message: "O produto foi deletado" });
+    .delete( async (req, res) => {
+        const id = req.params.id;
+        if (id.match(/^[0-9a-fA-F]{24}$/)) {
+            const prod = await Product.findOne({_id: id});
+            if (!prod) {
+                res.status(404).json({ error: "Produto não encontrado!"});
+                return;
+            }            
+            try {
+                await Product.deleteOne({_id: id});
+                res.status(200).json({ message: "O produto foi deletado com sucesso!" });
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            res.status(404).json({ error: "Id do produto inválido!"});
+            return;
+        }
     });
 
 router
-    .route("")
-    .get((req, res) => {
-        return res.json(produtos); 
+    .route("/")
+    .get( async (req, res) => {
+        try {
+            const products = await Product.find();
+            res.status(200).json(products);
+        } catch (error) {
+            console.log(error);
+        }
     })
-    .post((req, res) => {
-        produtos.push(req.body);
-        return res.json(produtos);
+    .post( async (req, res) => {
+        const { name, description, img, price, type, stand } = req.body;
+        const prod = { name, description, img, price, type, stand };
+        try {
+            await Product.create(prod);
+            res.status(201).json({message: "O produto foi inserido com sucesso!"});
+        } catch (error) {
+            console.log('deu erro');
+            console.log(error);
+        }
     });
 
 router
     .route("/nome/:search")
-    .get((req, res) => {
-        const { search } = req.params;
-        var retProducts = [];
-        produtos.forEach(prod => {
-            if (prod.name.toLowerCase().includes(search.toLowerCase())) {
-                retProducts.push(prod);
-            }
-        });
-        return res.json(retProducts);
+    .get( async (req, res) => {
+        const name = req.params.search;
+        try {
+            const products = await Product.find({name: name});
+            if (!products || products.length === 0) {
+                res.status(404).json({ error: "Nenhum produto encontrado com esse nome!"});
+                return;
+            } else
+            res.status(200).json(products);
+        } catch (error) {
+            console.log(error);
+        }
     });
 
 router
     .route("/tipo/:search")
-    .get((req, res) => {
-        const { search } = req.params;
-        var retProducts = [];
-        produtos.forEach(prod => {
-            if (prod.type.toLowerCase().includes(search.toLowerCase())) {
-                retProducts.push(prod);
-            }
-        });
-        return res.json(retProducts);
+    .get( async (req, res) => {
+        const type = req.params.search;
+        try {
+            const products = await Product.find({type: type});
+            if (!products || products.length === 0) {
+                res.status(404).json({ error: "Nenhum produto encontrado com esse tipo!"});
+                return;
+            } else
+            res.status(200).json(products);
+        } catch (error) {
+            console.log(error);
+        }
     });
 
 module.exports = router;

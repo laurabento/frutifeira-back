@@ -43,3 +43,5 @@ node_modules/js-yaml/lib/type/timestamp.js
 node_modules/js-yaml/LICENSE
 node_modules/js-yaml/package.json
 node_modules/js-yaml/README.md
+node_modules/*
+.env
