@@ -2,66 +2,6 @@ const express = require('express');
 let router = express.Router();
 const Order = require('../domain/pedido/Order');
 
-const pedidos = [
-    {
-        "userId":"1",
-        "totalPrice":2.6,
-        "qrcode":"",
-        "payment":"credit-card",
-        "scheduling":"2022-04-01 18:00:00",
-        "items": [
-            {
-                "productId":"1",
-                "unitprice": 1.5,
-                "amount": 1
-            },
-            {
-                "productId":"2",
-                "unitprice": 1.1,
-                "amount": 1
-            }
-        ]
-    },
-    {
-        "userId":"3",
-        "totalPrice":5.2,
-        "qrcode":"32345698778",
-        "payment":"credit-card",
-        "scheduling":"2022-03-21 14:00:00",
-        "items": [
-            {
-                "productId":"1",
-                "unitprice": 1.5,
-                "amount": 2
-            },
-            {
-                "productId":"2",
-                "unitprice": 1.1,
-                "amount": 2
-            }
-        ]
-    },
-    {
-        "userId":"2",
-        "totalPrice":11.9,
-        "qrcode":"",
-        "payment":"credit-card",
-        "scheduling":"2022-03-25 10:00:00",
-        "items": [
-            {
-                "productId":"1",
-                "unitprice": 1.5,
-                "amount": 5
-            },
-            {
-                "productId":"2",
-                "unitprice": 1.1,
-                "amount": 4
-            }
-        ]
-    }
-];
-
 router
     .route("/:id")
     .get( async (req, res) => {
