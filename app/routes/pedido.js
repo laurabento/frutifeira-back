@@ -1,5 +1,6 @@
 const express = require('express');
 let router = express.Router();
+const Order = require('../domain/pedido/Order');
 
 const pedidos = [
     {
@@ -62,43 +63,100 @@ const pedidos = [
 ];
 
 router
-    .route("/:index")
-    .get((req, res) => {
-        const { index } = req.params;
-        return res.json(pedidos[index]);
+    .route("/:id")
+    .get( async (req, res) => {
+        const id = req.params.id;
+        try {
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                const order = await Order.findOne({_id: id});
+                if (!order) {
+                    res.status(404).json({ error: "Pedido não encontrado!"});
+                    return;
+                }
+                res.status(200).json(order);
+            } else {
+                res.status(404).json({ error: "Id do pedido inválido!"});
+                return;
+            }       
+        } catch (error) {
+            console.log(error);
+        }
     })
-    .put((req, res) => {
-        const { index } = req.params;
-        pedidos[index] = req.body;
-        return res.json(pedidos);
+    .patch( async (req, res) => {
+        const id = req.params.id;
+        const { userId, totalPrice, qrcode, payment, scheduling, items } = req.body;
+        const order = { userId, totalPrice, qrcode, payment, scheduling, items };
+        try {
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                const updatedOrder = await Order.updatedOne({_id: id}, order);
+                if (updatedOrder.matchedCount === 0) {
+                    res.status(422).json({ error: "Pedido não encontrado!" });
+                    return;
+                }
+                res.status(200).json(order);
+            } else {
+                res.status(404).json({ error: "Id do pedido inválido!" });
+                return;
+            }       
+        } catch (error) {
+            console.log(error);
+        }
     })
-    .delete((req, res) => {
-        const { index } = req.params;    
-        pedidos.splice(index, 1);
-        return res.json({ message: "O pedido foi deletado" });
+    .delete( async (req, res) => {
+        const id = req.params.id;
+        if (id.match(/^[0-9a-fA-F]{24}$/)) {
+            const order = await Order.findOne({_id: id});
+            if (!order) {
+                res.status(404).json({ error: "Pedido não encontrado!"});
+                return;
+            }            
+            try {
+                await Order.deleteOne({_id: id});
+                res.status(200).json({ message: "O pedido foi deletado com sucesso!" });
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            res.status(404).json({ error: "Id do pedido inválido!"});
+            return;
+        }
     });
 
 router
     .route("")
-    .get((req, res) => {
-        return res.json(pedidos); 
+    .get( async (req, res) => {
+        try {
+            const orders = await Order.find();
+            res.status(200).json(orders);
+        } catch (error) {
+            console.log(error);
+        }
     })
-    .post((req, res) => {
-        pedidos.push(req.body);
-        return res.json(pedidos);
+    .post( async (req, res) => {
+        const { name, email, password, cpf, phone, card, condoId } = req.body;
+        const order = { name, email, password, cpf, phone, card, condoId };
+        try {
+            await Order.create(order);
+            res.status(201).json({message: "O pedido foi inserido com sucesso!"});
+        } catch (error) {
+            console.log(error);
+        }
     });
 
 router
     .route("/pagamento/:search")
-    .get((req, res) => {
-        const { search } = req.params;
-        var retOrders = [];
-        pedidos.forEach(order => {
-            if (order.payment.toLowerCase().includes(search.toLowerCase())) {
-                retOrders.push(order);
-            }
-        });
-        return res.json(retOrders);
+    .get( async (req, res) => {
+        const payment = req.params.search;
+        try {
+            const orders = await Order.find({card: { $regex: '.*' + payment + '.*' } }).limit(5);
+            if (!orders || orders.length === 0) {
+                res.status(404).json({ error: "Nenhum usuário encontrado com esse nome!"});
+                return;
+            } else
+            res.status(200).json(orders);
+        } catch (error) {
+            console.log(error);
+        }
     });
 
 module.exports = router;

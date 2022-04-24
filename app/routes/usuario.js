@@ -1,87 +1,118 @@
 const express = require('express');
 let router = express.Router();
-
-const usuarios = [
-    {
-        "name":"Raphael",
-        "email":"rkm@gmail.com",
-        "password":"012345",
-        "cpf":"12345698778",
-        "phone":"11982922331",
-        "card":"1234432156788765",
-        "condoId":"1",
-    },
-    {
-        "name":"Isabelle",
-        "email":"ioo@gmail.com",
-        "password":"543210",
-        "cpf":"32345698778",
-        "phone":"11988215481",
-        "card":"",
-        "condoId":"2"
-    },
-    {
-        "name":"Laura",
-        "email":"lgb@gmail.com",
-        "password":"987654",
-        "cpf":"45345698778",
-        "phone":"11995124528",
-        "card":"",
-        "condoId":"3"
-    }
-];
+const User = require('../domain/usuario/User');
 
 router
-    .route("/:index")
-    .get((req, res) => {
-        const { index } = req.params;
-        return res.json(usuarios[index]);
+    .route("/:id")
+    .get( async (req, res) => {
+        const id = req.params.id;
+        try {
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                const user = await User.findOne({_id: id});
+                if (!user) {
+                    res.status(404).json({ error: "Usuário não encontrado!"});
+                    return;
+                }
+                res.status(200).json(user);
+            } else {
+                res.status(404).json({ error: "Id do usuário inválido!"});
+                return;
+            }       
+        } catch (error) {
+            console.log(error);
+        }
     })
-    .put((req, res) => {
-        const { index } = req.params;
-        usuarios[index] = req.body;
-        return res.json(usuarios);
+    .patch( async (req, res) => {
+        const id = req.params.id;
+        const { name, email, password, cpf, phone, card, condoId } = req.body;
+        const user = { name, email, password, cpf, phone, card, condoId };
+        try {
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                const updatedUser = await User.updatedOne({_id: id}, user);
+                if (updatedUser.matchedCount === 0) {
+                    res.status(422).json({ error: "Usuário não encontrado!" });
+                    return;
+                }
+                res.status(200).json(user);
+            } else {
+                res.status(404).json({ error: "Id do usuário inválido!" });
+                return;
+            }       
+        } catch (error) {
+            console.log(error);
+        }
     })
-    .delete((req, res) => {
-        const { index } = req.params;    
-        usuarios.splice(index, 1);
-        return res.json({ message: "O usuário foi deletado" });
+    .delete( async (req, res) => {
+        const id = req.params.id;
+        if (id.match(/^[0-9a-fA-F]{24}$/)) {
+            const user = await User.findOne({_id: id});
+            if (!user) {
+                res.status(404).json({ error: "Usuário não encontrado!"});
+                return;
+            }            
+            try {
+                await User.deleteOne({_id: id});
+                res.status(200).json({ message: "O usuário foi deletado com sucesso!" });
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            res.status(404).json({ error: "Id do usuário inválido!"});
+            return;
+        }
     });
 
 router
     .route("")
-    .get((req, res) => {
-        return res.json(usuarios); 
+    .get( async (req, res) => {
+        try {
+            const users = await User.find();
+            res.status(200).json(users);
+        } catch (error) {
+            console.log(error);
+        }
     })
-    .post((req, res) => {
-        usuarios.push(req.body);
-        return res.json(usuarios);
+    .post( async (req, res) => {
+        const { name, email, password, cpf, phone, card, condoId } = req.body;
+        const user = { name, email, password, cpf, phone, card, condoId };
+        try {
+            await User.create(user);
+            res.status(201).json({message: "O usuário foi inserido com sucesso!"});
+        } catch (error) {
+            console.log(error);
+        }
     });
 
 router
     .route("/nome/:search")
-    .get((req, res) => {
-        const { search } = req.params;
-        var retUsers = [];
-        usuarios.forEach(user => {
-            if (user.name.toLowerCase().includes(search.toLowerCase())) {
-                retUsers.push(user);
-            }
-        });
-        return res.json(retUsers);
+    .get( async (req, res) => {
+        const name = req.params.search;
+        try {
+            const users = await User.find({name: { $regex: '.*' + name + '.*' } }).limit(5);
+            if (!users || users.length === 0) {
+                res.status(404).json({ error: "Nenhum usuário encontrado com esse nome!"});
+                return;
+            } else
+            res.status(200).json(users);
+        } catch (error) {
+            console.log(error);
+        }
     });
 
 router
     .route("/email/:search")
-    .get((req, res) => {
-        const { search } = req.params;
-        var retUsers = [];
-        usuarios.forEach(user => {
-            if (user.email.toLowerCase().includes(search.toLowerCase())) {
-                retUsers.push(user);
-            }
-        });
-        return res.json(retUsers);
+    .get( async (req, res) => {
+        const email = req.params.search;
+        try {
+            const users = await User.find({email: { $regex: '.*' + email + '.*' } }).limit(5);
+            if (!users || users.length === 0) {
+                res.status(404).json({ error: "Nenhum usuário encontrado com esse email!"});
+                return;
+            } else
+            res.status(200).json(users);
+        } catch (error) {
+            console.log(error);
+        }
     });
 
 module.exports = router;

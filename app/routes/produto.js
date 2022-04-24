@@ -79,7 +79,6 @@ router
             await Product.create(prod);
             res.status(201).json({message: "O produto foi inserido com sucesso!"});
         } catch (error) {
-            console.log('deu erro');
             console.log(error);
         }
     });
