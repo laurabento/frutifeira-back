@@ -1,8 +1,6 @@
 const express = require("express"); //Import the express dependency
 const mongoose = require("mongoose");
 require("dotenv").config();
-const DB_USER = process.env.DB_USER; 
-const DB_PASSWORD = encodeURIComponent(process.env.DB_PASSWORD);
 
 const app = express(); //Instantiate an express app, the main work horse of this server
 const usuarios    = require("./app/routes/usuario");
@@ -30,9 +28,7 @@ app.get("/", (req, res) => {
 });
 
 mongoose
-  .connect(
-    `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.3snsq.mongodb.net/frutifeira?retryWrites=true`
-  )
+  .connect(process.env.DB_STR_CONNECTION)
   .then(() => {
     app.listen(port, () => {
       //server starts listening for any attempts from a client to connect at port: {port}

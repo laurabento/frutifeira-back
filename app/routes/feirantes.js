@@ -66,7 +66,7 @@ router
     });
 
 router
-    .route("")
+    .route("/")
     //retorna todos os feirantes
     .get( async (req, res) => {
         try {

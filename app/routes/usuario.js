@@ -1,6 +1,9 @@
 const express = require('express');
 let router = express.Router();
 const User = require('../domain/usuario/User');
+const jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
+var lodash = require('lodash');
 
 router
     .route("/:id")
@@ -63,9 +66,10 @@ router
     });
 
 router
-    .route("")
-    .get( async (req, res) => {
+    .route("/")
+    .get(authenticateToken, async (req, res) => {
         try {
+            console.log('ué');
             const users = await User.find();
             res.status(200).json(users);
         } catch (error) {
@@ -76,12 +80,59 @@ router
         const { name, email, password, cpf, phone, card, condoId } = req.body;
         const user = { name, email, password, cpf, phone, card, condoId };
         try {
+            lodash.omit(user, 'password');
+            user.password = bcrypt.hash(password, 10);
+            const existingUser = await User.findOne({email: email});
+            if (existingUser) {
+                res.status(422).json({ error: "Email já cadastrado!" });
+                return;
+            }
             await User.create(user);
             res.status(201).json({message: "O usuário foi inserido com sucesso!"});
         } catch (error) {
             console.log(error);
         }
     });
+
+router
+    .route("/login")
+    .post( async (req, res) => {
+        const { email, password } = req.body;
+        const authentication = { email, password };
+        try {
+            const existingUser = await User.findOne({email: email});
+            if (!existingUser) {
+                res.status(422).json({ error: "Usuário não encontrado!" });
+                return;
+            }
+            if (existingUser && bcrypt.compare(password, existingUser.password)) {
+                const accessToken = jwt.sign(authentication, process.env.ACCESS_TOKEN);
+                res.status(200).json({message: "Login realizado com sucesso!", accessToken: accessToken});
+            } else {
+                res.status(422).json({message: "Senha incorreta!"});
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+function authenticateToken(req, res, next) {
+    try {
+        const token = req.headers.authorization.split(' ')[1]; // Authorization: 'Bearer TOKEN'
+        if (!token) {
+          return res.sendStatus(401);
+        }
+        console.log(token)
+        jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
+            if (err) return sendStatus(403);
+            req.user = user;  
+            next();
+        });
+    } catch (err) {
+        console.log(err)
+        res.status(400).send('Invalid token !');
+    }
+}
 
 router
     .route("/nome/:search")
