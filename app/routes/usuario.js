@@ -105,7 +105,7 @@ router
                 res.status(422).json({ error: "Usuário não encontrado!" });
                 return;
             }
-            if (existingUser && bcrypt.compare(password, existingUser.password)) {
+            if (existingUser && await bcrypt.compare(password, existingUser.password)) {
                 const accessToken = jwt.sign(authentication, process.env.ACCESS_TOKEN);
                 res.status(200).json({message: "Login realizado com sucesso!", accessToken: accessToken});
             } else {
