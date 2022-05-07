@@ -9,7 +9,7 @@ const feiras      = require("./app/routes/feira");
 const feirantes   = require("./app/routes/feirantes");
 const condominios = require("./app/routes/condominios");
 const pedidos     = require("./app/routes/pedido");
-const port = 3000; //Save the port number where your server will be listening
+const port = process.env.PORT || 5000; //Save the port number where your server will be listening
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
