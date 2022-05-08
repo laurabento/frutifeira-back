@@ -1,10 +1,11 @@
 const express = require('express');
 let router = express.Router();
+const authorize = require('../../authorization-middleware');
 const Condominium = require('../domain/condominio/Condominium');
 
 router
     .route("/:id")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         const id = req.params.id;
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -22,7 +23,7 @@ router
             console.log(error);
         }
     })
-    .patch( async (req, res) => {
+    .patch(authorize(), async (req, res) => {
         const id = req.params.id;
         const { name, address, city, state, contact } = req.body;
         const condo = { name, address, city, state, contact };
@@ -42,7 +43,7 @@ router
             console.log(error);
         }
     })
-    .delete( async (req, res) => {
+    .delete(authorize(), async (req, res) => {
         const id = req.params.id;
         if (id.match(/^[0-9a-fA-F]{24}$/)) {
             const condo = await Condominium.findOne({_id: id});
@@ -64,7 +65,7 @@ router
 
 router
     .route("/")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         try {
             const condos = await Condominium.find();
             res.status(200).json(condos);
@@ -85,7 +86,7 @@ router
 
 router
     .route("/nome/:search")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         const name = req.params.search;
         try {
             const condos = await Condominium.find({name: { $regex: '.*' + name + '.*' } }).limit(5);
@@ -101,7 +102,7 @@ router
 
 router
     .route("/endereco/:search")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         const address = req.params.search;
         try {
             const condos = await Condominium.find({address: { $regex: '.*' + address + '.*' } }).limit(5);
@@ -117,7 +118,7 @@ router
 
 router
     .route("/tudo/:search")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         const search = req.params.search;
         const rgx = (pattern) => new RegExp(`.*${pattern}.*`);
         const searchRgx = rgx(search);

@@ -1,11 +1,12 @@
 const express = require('express');
 let router = express.Router();
+const authorize = require('../../authorization-middleware');
 const MarketVendor = require('../domain/feirante/MarketVendor');
 
 router
     .route("/:id")
     //retorna um feirante
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         const id = req.params.id;
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -24,7 +25,7 @@ router
         }
     })
     //att um feirante
-    .patch( async (req, res) => {
+    .patch(authorize(), async (req, res) => {
         const id = req.params.id;
         const { name, product_type, email, password } = req.body;
         const market = { name, product_type, email, password };
@@ -45,7 +46,7 @@ router
         }
     })
     //exclui um feirante
-    .delete( async (req, res) => {
+    .delete(authorize(), async (req, res) => {
         const id = req.params.id;
         if (id.match(/^[0-9a-fA-F]{24}$/)) {
             const prod = await MarketVendor.findOne({_id: id});
@@ -68,7 +69,7 @@ router
 router
     .route("/")
     //retorna todos os feirantes
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         try {
             const markets = await MarketVendor.find();
             res.status(200).json(markets);
@@ -89,7 +90,7 @@ router
 
 router
     .route("/nome/:search")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         const name = req.params.search;
         try {
             const markets = await MarketVendor.find({name: name});
@@ -105,7 +106,7 @@ router
 
 router
     .route("/email/:search")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         const email = req.params.search;
         try {
             const markets = await MarketVendor.find({email: email});

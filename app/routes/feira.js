@@ -1,10 +1,11 @@
 const express = require('express');
 let router = express.Router();
+const authorize = require('../../authorization-middleware');
 const Stand = require('../domain/feira/Stand');
 
 router
     .route("/:id")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         const id = req.params.id;
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -22,7 +23,7 @@ router
             console.log(error);
         }
     })
-    .patch( async (req, res) => {
+    .patch(authorize(), async (req, res) => {
         const id = req.params.id;
         const { scheduleHour, feiranteId, condominioId } = req.body;
         const stand = { scheduleHour, feiranteId, condominioId };
@@ -42,7 +43,7 @@ router
             console.log(error);
         }
     })
-    .delete( async (req, res) => {
+    .delete(authorize(), async (req, res) => {
         const id = req.params.id;
         if (id.match(/^[0-9a-fA-F]{24}$/)) {
             const stand = await Stand.findOne({_id: id});
@@ -64,7 +65,7 @@ router
 
 router
     .route("/")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         try {
             const stands = await Stand.find();
             res.status(200).json(stands);
@@ -72,7 +73,7 @@ router
             console.log(error);
         }
     })
-    .post( async (req, res) => {
+    .post(authorize(), async (req, res) => {
         const { scheduleHour, feiranteId, condominioId } = req.body;
         const stand = { scheduleHour, feiranteId, condominioId };
         try {

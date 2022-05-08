@@ -1,10 +1,11 @@
 const express = require('express');
 let router = express.Router();
+const authorize = require('../../authorization-middleware');
 const Order = require('../domain/pedido/Order');
 
 router
     .route("/:id")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         const id = req.params.id;
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -22,7 +23,7 @@ router
             console.log(error);
         }
     })
-    .patch( async (req, res) => {
+    .patch(authorize(), async (req, res) => {
         const id = req.params.id;
         const { userId, totalPrice, qrcode, payment, scheduling, items } = req.body;
         const order = { userId, totalPrice, qrcode, payment, scheduling, items };
@@ -42,7 +43,7 @@ router
             console.log(error);
         }
     })
-    .delete( async (req, res) => {
+    .delete(authorize(), async (req, res) => {
         const id = req.params.id;
         if (id.match(/^[0-9a-fA-F]{24}$/)) {
             const order = await Order.findOne({_id: id});
@@ -64,7 +65,7 @@ router
 
 router
     .route("/")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         try {
             const orders = await Order.find();
             res.status(200).json(orders);
@@ -72,7 +73,7 @@ router
             console.log(error);
         }
     })
-    .post( async (req, res) => {
+    .post(authorize(), async (req, res) => {
         const { name, email, password, cpf, phone, card, condoId } = req.body;
         const order = { name, email, password, cpf, phone, card, condoId };
         try {
@@ -85,7 +86,7 @@ router
 
 router
     .route("/pagamento/:search")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         const payment = req.params.search;
         try {
             const orders = await Order.find({card: { $regex: '.*' + payment + '.*' } }).limit(5);

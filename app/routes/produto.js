@@ -1,10 +1,11 @@
 const express = require('express');
 let router = express.Router();
+const authorize = require('../../authorization-middleware');
 const Product = require('../domain/produto/Product');
 
 router
     .route("/:id")
-    .get( async (req, res) => {
+    .get(authorize(), async (req, res) => {
         const id = req.params.id;
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -22,7 +23,7 @@ router
             console.log(error);
         }
     })
-    .patch( async (req, res) => {
+    .patch(authorize(), async (req, res) => {
         const id = req.params.id;
         const { name, description, img, price, type, stand } = req.body;
         const prod = { name, description, img, price, type, stand };
@@ -42,7 +43,7 @@ router
             console.log(error);
         }
     })
-    .delete( async (req, res) => {
+    .delete(authorize(), async (req, res) => {
         const id = req.params.id;
         if (id.match(/^[0-9a-fA-F]{24}$/)) {
             const prod = await Product.findOne({_id: id});
@@ -72,7 +73,7 @@ router
             console.log(error);
         }
     })
-    .post( async (req, res) => {
+    .post(authorize(), async (req, res) => {
         const { name, description, img, price, type, stand } = req.body;
         const prod = { name, description, img, price, type, stand };
         try {
