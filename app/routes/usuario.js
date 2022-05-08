@@ -67,7 +67,7 @@ router
 
 router
     .route("/")
-    .get(authenticateToken, async (req, res) => {
+    .get( async (req, res) => {
         try {
             console.log('ué');
             const users = await User.find();
