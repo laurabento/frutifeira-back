@@ -18,6 +18,7 @@ Através de um site responsivo, o condômino poderá escolher em qual dispositiv
 - Mongo DB
 - JEST
 - IDE: Visual Studio Code
+- AWS: CICD pipelines
 
 ## 💾💻 Instalação
 1. Abra o projeto no Visual Studio Code
