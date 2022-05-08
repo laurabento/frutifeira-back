@@ -81,7 +81,7 @@ router
         const user = { name, email, password, cpf, phone, card, condoId };
         try {
             lodash.omit(user, 'password');
-            user.password = bcrypt.hash(password, 10);
+            user.password = await bcrypt.hash(password, 10);
             const existingUser = await User.findOne({email: email});
             if (existingUser) {
                 res.status(422).json({ error: "Email já cadastrado!" });
