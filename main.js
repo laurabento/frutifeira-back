@@ -1,5 +1,6 @@
 const express = require("express"); //Import the express dependency
 const mongoose = require("mongoose");
+var cors = require('cors');
 require("dotenv").config();
 
 const app = express(); //Instantiate an express app, the main work horse of this server
@@ -13,6 +14,7 @@ const port = process.env.PORT || 5000; //Save the port number where your server 
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 app.use("/api/v1.0/users/", usuarios);
 app.use("/api/v1.0/products/", produtos);
 app.use("/api/v1.0/stands/", feiras);
