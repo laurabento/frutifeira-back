@@ -1,7 +1,6 @@
-import feirantes from "./routes/feirantes";
-const express = require("express"); //Import the express dependency
-const app = express(); //Instantiate an express app, the main work horse of this server
-//const port = 8000; //Save the port number where your server will be listening
+// const express = require("express"); //Import the express dependency
+// const app = express(); //Instantiate an express app, the main work horse of this server
+// const port = 8000; //Save the port number where your server will be listening
 // const fs = require("fs");
 // const YAML = require("js-yaml");
 
@@ -21,27 +20,9 @@ const app = express(); //Instantiate an express app, the main work horse of this
 // });
 
 exports.handler = async (event) => {
-  const response = {};
-
-  if (event.path == "/") {
-    if (event.httpMethod == "GET") {
-      response.statusCode = 200;
-      response.body = "Teste Sucedido";
-    } else {
-      response.statusCode = 400;
-      response.body = "Teste Falho";
-    }
-  } else if (event.path == "/feirantes") {
-    if (event.httpMethod == "GET") {
-      app.get("/feirantes", function (req, res) {
-        res.json();
-      });
-    }
-    response.statusCode = 200;
-  } else {
-    response.statusCode = 400;
-    response.body = "Teste Falho";
-  }
-
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify("Hello from Lambda and Github!"),
+  };
   return response;
 };
