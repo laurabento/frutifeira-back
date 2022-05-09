@@ -112,7 +112,7 @@ router
                 res.status(422).json({message: "Senha incorreta!"});
             }
         } catch (error) {
-            console.log(error);
+            console.log(error); 
         }
     });
 
