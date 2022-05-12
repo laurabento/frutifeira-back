@@ -81,10 +81,39 @@ router
         const { name, product_type, email, password } = req.body;
         const market = { name, product_type, email, password };
         try {
+            lodash.omit(market, 'password');
+            market.password = await bcrypt.hash(password, 10);
+            const existingMarket = await MarketVendor.findOne({email: email});
+            if (existingMarket) {
+                res.status(422).json({ error: "Email já cadastrado!" });
+                return;
+            }
             await MarketVendor.create(market);
             res.status(201).json({message: "O feirante foi inserido com sucesso!"});
         } catch (error) {
             console.log(error);
+        }
+    });
+
+router
+    .route("/login")
+    .post( async (req, res) => {
+        const { email, password } = req.body;
+        const authentication = { email, password };
+        try {
+            const existingMarket = await MarketVendor.findOne({email: email});
+            if (!existingMarket) {
+                res.status(422).json({ error: "Feirante não encontrado!" });
+                return;
+            }
+            if (existingMarket && await bcrypt.compare(password, existingMarket.password)) {
+                const accessToken = jwt.sign(authentication, process.env.ACCESS_TOKEN);
+                res.status(200).json({message: "Login realizado com sucesso!", accessToken: accessToken, userType:'2'});
+            } else {
+                res.status(422).json({message: "Senha incorreta!"});
+            }
+        } catch (error) {
+            console.log(error); 
         }
     });
 

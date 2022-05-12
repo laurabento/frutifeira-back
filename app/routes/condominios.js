@@ -77,10 +77,39 @@ router
         const { name, address, city, state, contact } = req.body;
         const condo = { name, address, city, state, contact };
         try {
+            lodash.omit(condo, 'password');
+            condo.password = await bcrypt.hash(password, 10);
+            const existingCondo = await Condominium.findOne({email: email});
+            if (existingCondo) {
+                res.status(422).json({ error: "Email já cadastrado!" });
+                return;
+            }
             await Condominium.create(condo);
             res.status(201).json({message: "O condomínio foi inserido com sucesso!"});
         } catch (error) {
             console.log(error);
+        }
+    });
+
+router
+    .route("/login")
+    .post( async (req, res) => {
+        const { email, password } = req.body;
+        const authentication = { email, password };
+        try {
+            const existingCondo = await Condominium.findOne({email: email});
+            if (!existingCondo) {
+                res.status(422).json({ error: "Condomínio não encontrado!" });
+                return;
+            }
+            if (existingCondo && await bcrypt.compare(password, existingCondo.password)) {
+                const accessToken = jwt.sign(authentication, process.env.ACCESS_TOKEN);
+                res.status(200).json({message: "Login realizado com sucesso!", accessToken: accessToken, userType:'3'});
+            } else {
+                res.status(422).json({message: "Senha incorreta!"});
+            }
+        } catch (error) {
+            console.log(error); 
         }
     });
 
