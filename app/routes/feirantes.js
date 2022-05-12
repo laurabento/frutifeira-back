@@ -2,6 +2,9 @@ const express = require('express');
 let router = express.Router();
 const authorize = require('../../authorization-middleware');
 const MarketVendor = require('../domain/feirante/MarketVendor');
+const jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
+var lodash = require('lodash');
 
 router
     .route("/:id")

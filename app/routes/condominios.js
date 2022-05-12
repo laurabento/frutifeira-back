@@ -2,6 +2,9 @@ const express = require('express');
 let router = express.Router();
 const authorize = require('../../authorization-middleware');
 const Condominium = require('../domain/condominio/Condominium');
+const jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
+var lodash = require('lodash');
 
 router
     .route("/:id")
