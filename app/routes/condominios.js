@@ -25,8 +25,8 @@ router
     })
     .patch(authorize(), async (req, res) => {
         const id = req.params.id;
-        const { name, address, city, state, contact } = req.body;
-        const condo = { name, address, city, state, contact };
+        const { name, email, password, address, city, state, contact } = req.body;
+        const condo = { name, email, password, address, city, state, contact };
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
                 const updatedCondo = await Condominium.updatedOne({_id: id}, condo);
@@ -74,8 +74,8 @@ router
         }
     })
     .post( async (req, res) => {        
-        const { name, address, city, state, contact } = req.body;
-        const condo = { name, address, city, state, contact };
+        const { name, email, password, address, city, state, contact } = req.body;
+        const condo = { name, email, password, address, city, state, contact };
         try {
             lodash.omit(condo, 'password');
             condo.password = await bcrypt.hash(password, 10);
