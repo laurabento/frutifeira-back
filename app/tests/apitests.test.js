@@ -186,10 +186,8 @@ describe('POST Condominium', () => {
         password: "frutifeira123"
     })
     expect(res.statusCode).toEqual(201)
-    console.log(res._body);
     expect(res._body.condo.name).toEqual('teste'+randomNum)
     condoId = res._body.condo._id;
-    console.log(condoId)
   })
 })
 
@@ -209,7 +207,6 @@ describe('PATCH Condominium', () => {
         contact : "teste123@gmail.com"
     })
     expect(res.statusCode).toEqual(200)
-    console.log(res._body);
     expect(res._body.name).toEqual('updated Test')
   })
 })
@@ -366,10 +363,8 @@ describe('POST Stands', () => {
         condominioId:"1"
     })
     expect(res.statusCode).toEqual(201)
-    console.log(res._body);
     expect(res._body.stand.feiranteId).toEqual("2")
     standId = res._body.stand._id;
-    console.log(standId)
   })
 })
 
@@ -387,7 +382,6 @@ describe('PATCH Stands', () => {
         condominioId:"1"
     })
     expect(res.statusCode).toEqual(200)
-    console.log(res._body);
     expect(res._body.feiranteId).toEqual('1')
   })
 })
@@ -574,14 +568,13 @@ describe('POST Orders', () => {
             {
                 productId:"1",
                 unitprice: 1.5,
-                amount: 10
+                amount: 20
             }
         ]
     })
     expect(res.statusCode).toEqual(201)
     expect(res._body.order.totalPrice).toEqual(27)
     orderId = res._body.order._id;
-    console.log(orderId)
   })
 })
 
@@ -597,7 +590,6 @@ describe('PATCH Orders', () => {
         totalPrice: 28
     })
     expect(res.statusCode).toEqual(200)
-    console.log(res._body);
     expect(res._body.totalPrice).toEqual(28)
   })
 })
@@ -612,7 +604,6 @@ describe('DELETE Orders', () => {
       })
       .send()
     expect(res.statusCode).toEqual(200)
-    console.log(res._body);
     expect(res._body.message).toEqual('O pedido foi deletado com sucesso!')
   })
 })
