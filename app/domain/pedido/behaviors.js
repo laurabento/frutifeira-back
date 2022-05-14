@@ -1,4 +1,4 @@
-const { Order } = require('./pedido'); 
+const { Order } = require('./Order');
 
 const updateTotalPrice = ({ Order, totalPrice }) => {
   if (totalPrice <= 0) {

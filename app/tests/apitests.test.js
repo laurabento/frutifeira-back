@@ -565,8 +565,8 @@ describe('POST Orders', () => {
           "Bearer "+ authToken,
       })
       .send({
-        userId:"1",
-        totalPrice:23.8,
+        userId:"626ef7f8ecce8191d98b45fc",
+        totalPrice: 30,
         qrcode:"",
         payment:"credit-card",
         scheduling:"2022-03-25 10:00:00",
@@ -579,8 +579,7 @@ describe('POST Orders', () => {
         ]
     })
     expect(res.statusCode).toEqual(201)
-    console.log(res._body);
-    expect(res._body.order.totalPrice).toEqual(23.8)
+    expect(res._body.order.totalPrice).toEqual(27)
     orderId = res._body.order._id;
     console.log(orderId)
   })

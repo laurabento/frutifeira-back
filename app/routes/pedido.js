@@ -2,6 +2,7 @@ const express = require('express');
 let router = express.Router();
 const authorize = require('../../authorization-middleware');
 const Order = require('../domain/pedido/Order');
+const OrderUtils = require('../domain/helper');
 
 router
     .route("/:id")
@@ -77,6 +78,10 @@ router
         const { userId, totalPrice, qrcode, payment, scheduling, items } = req.body;
         const order = { userId, totalPrice, qrcode, payment, scheduling, items };
         try {
+            const orders = await Order.find({userId: { $regex: '.*' + userId + '.*' } }).limit(5);
+            if (orders && orders.length !== 0) {
+                order.totalPrice = OrderUtils.calcPriceFirstOrder(totalPrice);
+            }
             const newOrder = await Order.create(order);
             res.status(201).json({message: "O pedido foi inserido com sucesso!", order: newOrder});
         } catch (error) {
