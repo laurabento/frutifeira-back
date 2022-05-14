@@ -29,14 +29,18 @@ app.get("/", (req, res) => {
   //the .sendFile method needs the absolute path to the file, see: https://expressjs.com/en/4x/api.html#res.sendFile
 });
 
-mongoose
-  .connect(process.env.DB_STR_CONNECTION)
-  .then(() => {
-    app.listen(port, () => {
-      //server starts listening for any attempts from a client to connect at port: {port}
-      console.log(`Now listening on port ${port}`); 
-    });
-  })
-  .catch((err => console.log(err)))
+if (process.env.NODE_ENV !== 'TES') {
+  mongoose
+    .connect(process.env.DB_STR_CONNECTION)
+    .then(() => {
+      server = app.listen(port, () => {
+        //server starts listening for any attempts from a client to connect at port: {port}
+        console.log(`Now listening on port ${port}`); 
+      });
+      
+      console.log(server.address())
+    })
+    .catch((err => console.log(err)))
+}
 
 module.exports = app;

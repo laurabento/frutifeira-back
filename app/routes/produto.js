@@ -9,7 +9,7 @@ router
         const id = req.params.id;
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const prod = await Product.findOne({_id: id});
+                const prod = await Product.findById({_id: id});
                 if (!prod) {
                     res.status(404).json({ error: "Produto não encontrado!"});
                     return;
@@ -29,7 +29,7 @@ router
         const prod = { name, description, img, price, type, stand };
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const updatedProd = await Product.updatedOne({_id: id}, prod);
+                const updatedProd = await Product.updateOne({_id: id}, prod);
                 if (updatedProd.matchedCount === 0) {
                     res.status(422).json({ error: "Produto não encontrado!" });
                     return;
@@ -77,8 +77,8 @@ router
         const { name, description, img, price, type, stand } = req.body;
         const prod = { name, description, img, price, type, stand };
         try {
-            await Product.create(prod);
-            res.status(201).json({message: "O produto foi inserido com sucesso!"});
+            const product = await Product.create(prod);
+            res.status(201).json({message: "O produto foi inserido com sucesso!", product: product});
         } catch (error) {
             console.log(error);
         }

@@ -13,7 +13,7 @@ router
         const id = req.params.id;
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const market = await MarketVendor.findOne({ _id: id });
+                const market = await MarketVendor.findById({_id: id});
                 if (!market) {
                     res.status(404).json({ error: "Feirante não encontrado!" });
                     return;
@@ -34,7 +34,7 @@ router
         const market = { name, product_type, email, password };
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const updatedMarket = await MarketVendor.updatedOne({ _id: id }, market);
+                const updatedMarket = await MarketVendor.updateOne({ _id: id }, market);
                 if (updatedMarket.matchedCount === 0) {
                     res.status(422).json({ error: "Feirante não encontrado!" });
                     return;
@@ -92,8 +92,8 @@ router
                 res.status(422).json({ error: "Email já cadastrado!" });
                 return;
             }
-            await MarketVendor.create(market);
-            res.status(201).json({ message: "O usuário foi inserido com sucesso!" });
+            const newMarket = await MarketVendor.create(market);
+            res.status(201).json({ message: "O usuário foi inserido com sucesso!", market: newMarket });
         } catch (error) {
             console.log(error);
         }
@@ -126,7 +126,7 @@ router
     .get(authorize(), async(req, res) => {
         const name = req.params.search;
         try {
-            const markets = await MarketVendor.find({ name: name });
+            const markets = await MarketVendor.find({ name: { $regex: '.*' + name + '.*' } }).limit(5);
             if (!markets || markets.length === 0) {
                 res.status(404).json({ error: "Nenhum feirante encontrado com esse nome!" });
                 return;
@@ -138,39 +138,39 @@ router
     });
 
 
-router
-    .route("/login")
-    .post(async(req, res) => {
-        const { email, password } = req.body;
-        const authentication = { email, password };
-        try {
-            const existingUser = await MarketVendor.findOne({ email: email });
-            if (!existingUser) {
-                console.log(existingUser);
-                console.log('nao achou');
-                res.status(422).json({ error: "Usuário não encontrado!" });
-                return;
-            }
-            if (existingUser && await bcrypt.compare(password, existingUser.password)) {
-                const accessToken = jwt.sign(authentication, process.env.ACCESS_TOKEN);
-                console.log('login')
-                res.status(200).json({ message: "Login realizado com sucesso!", accessToken: accessToken });
-            } else {
-                console.log(existingUser);
-                console.log('nao achou');
-                res.status(422).json({ message: "Senha incorreta!" });
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    });
+// router
+//     .route("/login")
+//     .post(async(req, res) => {
+//         const { email, password } = req.body;
+//         const authentication = { email, password };
+//         try {
+//             const existingUser = await MarketVendor.findOne({ email: email });
+//             if (!existingUser) {
+//                 console.log(existingUser);
+//                 console.log('nao achou');
+//                 res.status(422).json({ error: "Usuário não encontrado!" });
+//                 return;
+//             }
+//             if (existingUser && await bcrypt.compare(password, existingUser.password)) {
+//                 const accessToken = jwt.sign(authentication, process.env.ACCESS_TOKEN);
+//                 console.log('login')
+//                 res.status(200).json({ message: "Login realizado com sucesso!", accessToken: accessToken });
+//             } else {
+//                 console.log(existingUser);
+//                 console.log('nao achou');
+//                 res.status(422).json({ message: "Senha incorreta!" });
+//             }
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     });
 
 router
     .route("/email/:search")
     .get(authorize(), async(req, res) => {
         const email = req.params.search;
         try {
-            const markets = await MarketVendor.find({ email: email });
+            const markets = await MarketVendor.find({ email: { $regex: '.*' + email + '.*' } }).limit(5);
             if (!markets || markets.length === 0) {
                 res.status(404).json({ error: "Nenhum feirante encontrado com esse email!" });
                 return;

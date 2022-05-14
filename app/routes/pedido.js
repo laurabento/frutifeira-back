@@ -9,7 +9,7 @@ router
         const id = req.params.id;
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const order = await Order.findOne({_id: id});
+                const order = await Order.findById({_id: id});
                 if (!order) {
                     res.status(404).json({ error: "Pedido não encontrado!"});
                     return;
@@ -29,7 +29,7 @@ router
         const order = { userId, totalPrice, qrcode, payment, scheduling, items };
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const updatedOrder = await Order.updatedOne({_id: id}, order);
+                const updatedOrder = await Order.updateOne({_id: id}, order);
                 if (updatedOrder.matchedCount === 0) {
                     res.status(422).json({ error: "Pedido não encontrado!" });
                     return;
@@ -74,11 +74,11 @@ router
         }
     })
     .post(authorize(), async (req, res) => {
-        const { name, email, password, cpf, phone, card, condoId } = req.body;
-        const order = { name, email, password, cpf, phone, card, condoId };
+        const { userId, totalPrice, qrcode, payment, scheduling, items } = req.body;
+        const order = { userId, totalPrice, qrcode, payment, scheduling, items };
         try {
-            await Order.create(order);
-            res.status(201).json({message: "O pedido foi inserido com sucesso!"});
+            const newOrder = await Order.create(order);
+            res.status(201).json({message: "O pedido foi inserido com sucesso!", order: newOrder});
         } catch (error) {
             console.log(error);
         }

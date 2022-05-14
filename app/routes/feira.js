@@ -9,7 +9,7 @@ router
         const id = req.params.id;
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const stand = await Stand.findOne({_id: id});
+                const stand = await Stand.findById({_id: id});
                 if (!stand) {
                     res.status(404).json({ error: "Feira não encontrada!"});
                     return;
@@ -29,7 +29,7 @@ router
         const stand = { scheduleHour, feiranteId, condominioId };
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const updatedstand = await Stand.updatedOne({_id: id}, stand);
+                const updatedstand = await Stand.updateOne({_id: id}, stand);
                 if (updatedstand.matchedCount === 0) {
                     res.status(422).json({ error: "Feira não encontrada!" });
                     return;
@@ -53,7 +53,7 @@ router
             }            
             try {
                 await Stand.deleteOne({_id: id});
-                res.status(200).json({ message: "A feira foi deletado com sucesso!" });
+                res.status(200).json({ message: "A feira foi deletada com sucesso!" });
             } catch (error) {
                 console.log(error);
             }
@@ -77,8 +77,8 @@ router
         const { scheduleHour, feiranteId, condominioId } = req.body;
         const stand = { scheduleHour, feiranteId, condominioId };
         try {
-            await Stand.create(stand);
-            res.status(201).json({message: "A feira foi inserida com sucesso!"});
+            const newStand = await Stand.create(stand);
+            res.status(201).json({message: "A feira foi inserida com sucesso!", stand: newStand});
         } catch (error) {
             console.log(error);
         }

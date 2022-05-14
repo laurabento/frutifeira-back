@@ -11,7 +11,7 @@ router
         const id = req.params.id;
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const user = await User.findOne({ _id: id });
+                const user = await User.findById({_id: id});
                 if (!user) {
                     res.status(404).json({ error: "Usuário não encontrado!" });
                     return;
@@ -31,7 +31,9 @@ router
         const user = { name, email, password, cpf, phone, card, condoId };
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const updatedUser = await User.updatedOne({ _id: id }, user);
+                lodash.omit(user, 'password');
+                user.password = await bcrypt.hash(password, 10);
+                const updatedUser = await User.updateOne({ _id: id }, user);
                 if (updatedUser.matchedCount === 0) {
                     res.status(422).json({ error: "Usuário não encontrado!" });
                     return;
@@ -69,7 +71,6 @@ router
     .route("/")
     .get(async(req, res) => {
         try {
-            console.log('cornichi');
             const users = await User.find();
             res.status(200).json(users);
         } catch (error) {
@@ -87,8 +88,8 @@ router
                 res.status(422).json({ error: "Email já cadastrado!" });
                 return;
             }
-            await User.create(user);
-            res.status(201).json({ message: "O usuário foi inserido com sucesso!" });
+            const newUser = await User.create(user);
+            res.status(201).json({ message: "O usuário foi inserido com sucesso!", user : newUser });
         } catch (error) {
             console.log(error);
         }
