@@ -108,7 +108,7 @@ router
             const existingMarket = await MarketVendor.findOne({ email: email });
             if (!existingMarket) {
                 res.status(422).json({ error: "Feirante não encontrado!" });
-                return;
+                return false;
             }
             if (existingMarket && await bcrypt.compare(password, existingMarket.password)) {
                 const accessToken = jwt.sign(authentication, process.env.ACCESS_TOKEN);
