@@ -13,7 +13,7 @@ router
         const id = req.params.id;
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const market = await MarketVendor.findById({_id: id});
+                const market = await MarketVendor.findById({ _id: id });
                 if (!market) {
                     res.status(404).json({ error: "Feirante não encontrado!" });
                     return;
@@ -106,15 +106,15 @@ router
         const authentication = { email, password };
         try {
             const existingMarket = await MarketVendor.findOne({ email: email });
-            if (!existingMarket) {
-                res.status(422).json({ error: "Feirante não encontrado!" });
+            if (existingMarket === null || !existingMarket) {
+                res.status(422).json({ error: "Feirante não encontrado!", status: "422" });
                 return false;
             }
             if (existingMarket && await bcrypt.compare(password, existingMarket.password)) {
                 const accessToken = jwt.sign(authentication, process.env.ACCESS_TOKEN);
-                res.status(200).json({ message: "Login realizado com sucesso!", accessToken: accessToken, userType: '2' });
+                res.status(200).json({ message: "Login realizado com sucesso!", accessToken: accessToken, userType: '2', status: "200" });
             } else {
-                res.status(422).json({ message: "Senha incorreta!" });
+                res.status(422).json({ message: "Senha incorreta!", status: "422" });
             }
         } catch (error) {
             console.log(error);
