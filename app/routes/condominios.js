@@ -68,7 +68,7 @@ router
 
 router
     .route("/")
-    .get(authorize(), async (req, res) => {
+    .get( async (req, res) => {
         try {
             const condos = await Condominium.find();
             res.status(200).json(condos);
