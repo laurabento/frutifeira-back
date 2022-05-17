@@ -78,7 +78,7 @@ router
         const { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, stand } = req.body;
         const prod = { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, stand };
         try {
-            prod.originalDiscount = OrderUtils.calcOriginalDiscount(type);
+            prod = OrderUtils.calcOriginalDiscount(prod);
             const product = await Product.create(prod);
             res.status(201).json({message: "O produto foi inserido com sucesso!", product: product});
         } catch (error) {

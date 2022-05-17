@@ -3,13 +3,13 @@ module.exports = {
         return totalPrice * 0.9
     },
 
-    calcOriginalDiscount(type) {
-        var discount = 0;
-        if (type == 'Fruta') {
-            discount = 0.02;
-        } else if (type == 'Verdura') {
-            discount = 0.05;
+    calcOriginalDiscount(product) {
+        if (product.type == 'Fruta') {
+            product.originalDiscount = 0.02;
+        } else if (product.type == 'Verdura') {
+            product.originalDiscount = 0.05;
         }
-        return discount;
+        product.oldPrice = product.price / (1 - product.originalDiscount);
+        return product;
     }
 }
