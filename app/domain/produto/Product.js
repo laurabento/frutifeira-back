@@ -4,6 +4,10 @@ const Product = mongoose.model('product', {
   description: String, 
   img: String, 
   price: Number, 
+  discount: Number,
+  originalDiscount: Number,
+  oldPrice: Number,
+  quantity: Number,
   type: String, 
   unit: String, 
   stand: String
