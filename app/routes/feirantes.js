@@ -72,7 +72,7 @@ router
 router
     .route("/")
     //retorna todos os feirantes
-    .get(authorize(), async(req, res) => {
+    .get(async(req, res) => {
         try {
             const markets = await MarketVendor.find();
             res.status(200).json(markets);
