@@ -3,7 +3,12 @@ let router = express.Router();
 const authorize = require('../../authorization-middleware');
 const Condominium = require('../domain/condominio/Condominium');
 const MarketVendor = require('../domain/feirante/MarketVendor');
+const Product = require('../domain/produto/Product');
 const MarketCondominium = require('../domain/feiranteCondominio/MarketCondominium');
+const jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
+var lodash = require('lodash');
+const { stringify } = require('nodemon/lib/utils');
 
 router
     .route("/:id")
@@ -72,7 +77,21 @@ router
             const condos = await MarketCondominium.find();
             var marketVendorsIds = [];
             condos.forEach( element => marketVendorsIds.push(element.marketVendorId));
-            const records = await MarketVendor.find({ '_id': { $in: marketVendorsIds } });
+            var records = await MarketVendor.find({ '_id': { $in: marketVendorsIds } });
+            const prods = await Product.find({ marketVendorId: { $in: marketVendorsIds } });
+            records = JSON.parse(JSON.stringify(records));
+            records.forEach(function(entry) {
+                entry.products = [];
+            })
+            records.forEach(function (entry){
+                prods.forEach(function (prod){
+                    if (prod.marketVendorId == entry._id.toString()) {
+                        var newProd = JSON.parse(JSON.stringify(prod));
+                        entry.products.push(newProd);
+                    }
+                })
+            })
+                
             res.status(200).json(records);
         } catch (error) {
             console.log(error);
@@ -119,7 +138,20 @@ router
             } else {
                 var marketVendorsIds = [];
                 marketCondos.forEach( element => marketVendorsIds.push(element.marketVendorId));
-                const records = await MarketVendor.find({ '_id': { $in: marketVendorsIds } });
+                var records = await MarketVendor.find({ '_id': { $in: marketVendorsIds } });
+                const prods = await Product.find({ marketVendorId: { $in: marketVendorsIds } });
+                records = JSON.parse(JSON.stringify(records));
+                records.forEach(function(entry) {
+                    entry.products = [];
+                })
+                records.forEach(function (entry){
+                    prods.forEach(function (prod){
+                        if (prod.marketVendorId == entry._id.toString()) {
+                            var newProd = JSON.parse(JSON.stringify(prod));
+                            entry.products.push(newProd);
+                        }
+                    })
+                })
                 res.status(200).json(records);
             }
         } catch (error) {
