@@ -107,7 +107,7 @@ router
             }
             if (existingCondo && await bcrypt.compare(password, existingCondo.password)) {
                 const accessToken = jwt.sign(authentication, process.env.ACCESS_TOKEN);
-                res.status(200).json({ message: "Login realizado com sucesso!", accessToken: accessToken, userType: '3', status: "200" });
+                res.status(200).json({ message: "Login realizado com sucesso!", accessToken: accessToken, userType: '3', status: "200", id: existingCondo._id  });
             } else {
                 res.status(422).json({ message: "Senha incorreta!", status: "422" });
             }

@@ -108,7 +108,7 @@ router
             }
             if (existingUser && await bcrypt.compare(password, existingUser.password)) {
                 const accessToken = jwt.sign(authentication, process.env.ACCESS_TOKEN);
-                res.status(200).json({ message: "Login realizado com sucesso!", accessToken: accessToken, userType: '1' });
+                res.status(200).json({ message: "Login realizado com sucesso!", accessToken: accessToken, userType: '1', id: existingUser._id  });
             } else {
                 res.status(422).json({ message: "Senha incorreta!" });
             }
