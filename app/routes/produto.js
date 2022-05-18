@@ -26,8 +26,8 @@ router
     })
     .patch(authorize(), async (req, res) => {
         const id = req.params.id;
-        const { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, stand } = req.body;
-        const prod = { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, stand };
+        const { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand } = req.body;
+        const prod = { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand };
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
                 const updatedProd = await Product.updateOne({_id: id}, prod);
@@ -75,8 +75,31 @@ router
         }
     })
     .post(authorize(), async (req, res) => {
-        const { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, stand } = req.body;
-        const prod = { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, stand };
+        const { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand } = req.body;
+        const prod = { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand };
+        try {
+            prod = OrderUtils.calcOriginalDiscount(prod);
+            const product = await Product.create(prod);
+            res.status(201).json({message: "O produto foi inserido com sucesso!", product: product});
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+router
+    .route("/feirante/:id")
+    .get( async (req, res) => {
+        try {
+            const id = req.params.id;
+            const products = await Product.find( { marketVendorId: id } );
+            res.status(200).json(products);
+        } catch (error) {
+            console.log(error);
+        }
+    })
+    .post(authorize(), async (req, res) => {
+        const { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand } = req.body;
+        const prod = { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand };
         try {
             prod = OrderUtils.calcOriginalDiscount(prod);
             const product = await Product.create(prod);

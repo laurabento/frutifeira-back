@@ -10,6 +10,7 @@ const Product = mongoose.model('product', {
   quantity: Number,
   type: String, 
   unit: String, 
+  marketVendorId: String, 
   stand: String
 })
   
