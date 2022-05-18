@@ -10,6 +10,7 @@ const feiras      = require("./app/routes/feira");
 const feirantes   = require("./app/routes/feirantes");
 const condominios = require("./app/routes/condominios");
 const pedidos     = require("./app/routes/pedido");
+const feiranteCondominios = require("./app/routes/feiranteCondominio");
 const port = process.env.PORT || 5000; //Save the port number where your server will be listening
 
 app.use(express.urlencoded({ extended: true }));
@@ -20,6 +21,7 @@ app.use("/api/v1.0/products/", produtos);
 app.use("/api/v1.0/stands/", feiras);
 app.use("/api/v1.0/marketvendors/", feirantes);
 app.use("/api/v1.0/condominium/", condominios);
+app.use("/api/v1.0/marketcondominium/", feiranteCondominios);
 app.use("/api/v1.0/orders/", pedidos);
 
 //Idiomatic expression in express to route and respond to a client request
