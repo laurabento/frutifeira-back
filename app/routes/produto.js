@@ -2,6 +2,7 @@ const express = require('express');
 let router = express.Router();
 const authorize = require('../../authorization-middleware');
 const Product = require('../domain/produto/Product');
+const MarketVendor = require('../domain/feirante/MarketVendor');
 const OrderUtils = require('../domain/helper');
 
 router
@@ -91,7 +92,14 @@ router
     .get( async (req, res) => {
         try {
             const id = req.params.id;
-            const products = await Product.find( { marketVendorId: id } );
+            const market = await MarketVendor.findById({_id: id});
+            var products = await Product.find( { marketVendorId: id } );
+
+            products = JSON.parse(JSON.stringify(products));
+            products.forEach(function(entry) {
+                entry.marketVendorName = market.name;
+            })
+
             res.status(200).json(products);
         } catch (error) {
             console.log(error);
