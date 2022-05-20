@@ -27,8 +27,8 @@ router
     })
     .patch(authorize(), async (req, res) => {
         const id = req.params.id;
-        const { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand } = req.body;
-        const prod = { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand };
+        const { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorId, stand } = req.body;
+        const prod = { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorId, stand };
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
                 const updatedProd = await Product.updateOne({_id: id}, prod);
@@ -76,8 +76,8 @@ router
         }
     })
     .post(authorize(), async (req, res) => {
-        const { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorsId, stand } = req.body;
-        var prod = { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorsId, stand };
+        const { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorId, stand } = req.body;
+        var prod = { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorId, stand };
         try {
             prod = OrderUtils.calcOriginalDiscount(prod);
             const product = await Product.create(prod);
@@ -106,8 +106,8 @@ router
         }
     })
     .post(authorize(), async (req, res) => {
-        const { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorsId, stand } = req.body;
-        var prod = { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorsId, stand };
+        const { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorId, stand } = req.body;
+        var prod = { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorId, stand };
         try {
             prod = OrderUtils.calcOriginalDiscount(prod);
             const product = await Product.create(prod);
