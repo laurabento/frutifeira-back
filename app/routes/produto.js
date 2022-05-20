@@ -76,8 +76,8 @@ router
         }
     })
     .post(authorize(), async (req, res) => {
-        const { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand } = req.body;
-        const prod = { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand };
+        const { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorsId, stand } = req.body;
+        const prod = { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorsId, stand };
         try {
             prod = OrderUtils.calcOriginalDiscount(prod);
             const product = await Product.create(prod);
@@ -106,8 +106,8 @@ router
         }
     })
     .post(authorize(), async (req, res) => {
-        const { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand } = req.body;
-        const prod = { name, description, img, price, type, unit, discount, oldPrice, quantity, originalDiscount, marketVendorsId, stand };
+        const { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorsId, stand } = req.body;
+        const prod = { name, description, img, price, type, unit, discount, finalPrice, quantity, marketVendorsId, stand };
         try {
             prod = OrderUtils.calcOriginalDiscount(prod);
             const product = await Product.create(prod);

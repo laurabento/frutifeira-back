@@ -4,12 +4,8 @@ module.exports = {
     },
 
     calcOriginalDiscount(product) {
-        if (product.type == 'Fruta') {
-            product.originalDiscount = 0.02;
-        } else if (product.type == 'Verdura') {
-            product.originalDiscount = 0.05;
-        }
-        product.oldPrice = product.price / (1 - product.originalDiscount);
+        const frutifeiraFee = 0.02;
+        product.finalPrice = (product.price * (1 - product.discount)) / (1 - frutifeiraFee);
         return product;
     }
 }
