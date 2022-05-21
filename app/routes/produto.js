@@ -99,7 +99,6 @@ router
             products.forEach(function(entry) {
                 entry.marketVendorName = market.name;
             })
-            products.push(market.name);
 
             res.status(200).json(products);
         } catch (error) {
@@ -117,6 +116,20 @@ router
             console.log(error);
         }
     });
+
+
+router
+    .route("/feirante/:id/nome")
+    .get( async (req, res) => {
+        try {
+            const id = req.params.id;
+            const market = await MarketVendor.findById({_id: id});
+
+            res.status(200).json(market.name);
+        } catch (error) {
+            console.log(error);
+        }
+    })
 
 router
     .route("/nome/:search")
