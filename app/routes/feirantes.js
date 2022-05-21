@@ -10,6 +10,7 @@ router
   .route("/:id")
   //retorna um feirante
   .get(authorize(), async (req, res) => {
+    // #swagger.tags = ['Feirante']
     const id = req.params.id;
     try {
       if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -29,11 +30,14 @@ router
   })
   //att um feirante
   .patch(authorize(), async (req, res) => {
+    // #swagger.tags = ['Feirante']
     const id = req.params.id;
     const { name, product_type, email, password, stand_name } = req.body;
     const market = { name, product_type, email, password, stand_name };
     try {
       if (id.match(/^[0-9a-fA-F]{24}$/)) {
+        lodash.omit(market, "password");
+        market.password = await bcrypt.hash(password, 10);
         const updatedMarket = await MarketVendor.updateOne({ _id: id }, market);
         if (updatedMarket.matchedCount === 0) {
           res.status(422).json({ error: "Feirante não encontrado!" });
@@ -50,6 +54,7 @@ router
   })
   //exclui um feirante
   .delete(authorize(), async (req, res) => {
+    // #swagger.tags = ['Feirante']
     const id = req.params.id;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       const prod = await MarketVendor.findOne({ _id: id });
@@ -75,6 +80,7 @@ router
   .route("/")
   //retorna todos os feirantes
   .get(async (req, res) => {
+    // #swagger.tags = ['Feirante']
     try {
       const markets = await MarketVendor.find();
       res.status(200).json(markets);
@@ -83,6 +89,7 @@ router
     }
   })
   .post(async (req, res) => {
+    // #swagger.tags = ['Feirante']
     const { name, product_type, email, password } = req.body;
     const market = { name, product_type, email, password };
 
@@ -105,6 +112,7 @@ router
   });
 
 router.route("/login").post(async (req, res) => {
+  // #swagger.tags = ['Feirante']
   const { email, password } = req.body;
   const authentication = { email, password };
   try {
@@ -136,6 +144,7 @@ router.route("/login").post(async (req, res) => {
 });
 
 router.route("/nome/:search").get(authorize(), async (req, res) => {
+  // #swagger.tags = ['Feirante']
   const name = req.params.search;
   try {
     const markets = await MarketVendor.find({
@@ -180,6 +189,7 @@ router.route("/nome/:search").get(authorize(), async (req, res) => {
 //     });
 
 router.route("/email/:search").get(authorize(), async (req, res) => {
+  // #swagger.tags = ['Feirante']
   const email = req.params.search;
   try {
     const markets = await MarketVendor.find({
