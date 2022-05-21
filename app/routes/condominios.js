@@ -160,7 +160,7 @@ router.route("/login").post(async (req, res) => {
     if (!existingCondo) {
       res
         .status(422)
-        .json({ message: "Condomínio não encontrado!", status: "422" });
+        .json({ error: "Condomínio não encontrado!", status: "422" });
       return;
     }
     if (
@@ -176,7 +176,7 @@ router.route("/login").post(async (req, res) => {
         id: existingCondo._id,
       });
     } else {
-      res.status(422).json({ message: "Senha incorreta!", status: "422" });
+      res.status(422).json({ error: "Senha incorreta!", status: "422" });
     }
   } catch (error) {
     console.log(error);

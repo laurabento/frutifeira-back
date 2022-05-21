@@ -106,9 +106,7 @@ router.route("/login").post(async (req, res) => {
   try {
     const existingUser = await User.findOne({ email: email });
     if (!existingUser) {
-      res
-        .status(422)
-        .json({ message: "Usuário não encontrado!", status: "422" });
+      res.status(422).json({ error: "Usuário não encontrado!", status: "422" });
       return;
     }
     if (
@@ -124,7 +122,7 @@ router.route("/login").post(async (req, res) => {
         status: "200",
       });
     } else {
-      res.status(422).json({ message: "Senha incorreta!", status: "422" });
+      res.status(422).json({ error: "Senha incorreta!", status: "422" });
     }
   } catch (error) {
     console.log(error);
