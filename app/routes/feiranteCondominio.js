@@ -172,7 +172,7 @@ router
 
 router
     .route("/condominio/:id/produtos")
-    .get(authorize(), async(req, res) => {
+    .get( async(req, res) => {
         const id = req.params.id;
         try {
             console.log(id);
