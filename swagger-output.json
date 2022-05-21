@@ -24,6 +24,9 @@
     },
     "/api/v1.0/users/{id}": {
       "get": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [
           {
@@ -43,6 +46,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [
           {
@@ -62,6 +68,9 @@
         }
       },
       "patch": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [
           {
@@ -116,6 +125,9 @@
     },
     "/api/v1.0/users/": {
       "get": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -125,6 +137,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [
           {
@@ -170,6 +185,9 @@
     },
     "/api/v1.0/users/login": {
       "post": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [
           {
@@ -200,6 +218,9 @@
     },
     "/api/v1.0/users/nome/{search}": {
       "get": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [
           {
@@ -221,6 +242,9 @@
     },
     "/api/v1.0/users/email/{search}": {
       "get": {
+        "tags": [
+          "Usuario"
+        ],
         "description": "",
         "parameters": [
           {
@@ -242,6 +266,9 @@
     },
     "/api/v1.0/products/{id}": {
       "get": {
+        "tags": [
+          "Produto"
+        ],
         "description": "",
         "parameters": [
           {
@@ -261,6 +288,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Produto"
+        ],
         "description": "",
         "parameters": [
           {
@@ -280,6 +310,9 @@
         }
       },
       "patch": {
+        "tags": [
+          "Produto"
+        ],
         "description": "",
         "parameters": [
           {
@@ -349,6 +382,9 @@
     },
     "/api/v1.0/products/": {
       "get": {
+        "tags": [
+          "Produto"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -358,6 +394,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Produto"
+        ],
         "description": "",
         "parameters": [
           {
@@ -378,7 +417,7 @@
                 "price": {
                   "example": "any"
                 },
-                "type": {
+                "product_type": {
                   "example": "any"
                 },
                 "unit": {
@@ -412,6 +451,9 @@
     },
     "/api/v1.0/products/feirante/{id}": {
       "get": {
+        "tags": [
+          "Produto"
+        ],
         "description": "",
         "parameters": [
           {
@@ -428,6 +470,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Produto"
+        ],
         "description": "",
         "parameters": [
           {
@@ -486,8 +531,32 @@
         }
       }
     },
+    "/api/v1.0/products/feirante/{id}/nome": {
+      "get": {
+        "tags": [
+          "Produto"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1.0/products/nome/{search}": {
       "get": {
+        "tags": [
+          "Produto"
+        ],
         "description": "",
         "parameters": [
           {
@@ -509,6 +578,9 @@
     },
     "/api/v1.0/products/tipo/{search}": {
       "get": {
+        "tags": [
+          "Produto"
+        ],
         "description": "",
         "parameters": [
           {
@@ -530,6 +602,9 @@
     },
     "/api/v1.0/stands/{id}": {
       "get": {
+        "tags": [
+          "Feira"
+        ],
         "description": "",
         "parameters": [
           {
@@ -549,6 +624,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Feira"
+        ],
         "description": "",
         "parameters": [
           {
@@ -568,6 +646,9 @@
         }
       },
       "patch": {
+        "tags": [
+          "Feira"
+        ],
         "description": "",
         "parameters": [
           {
@@ -610,6 +691,9 @@
     },
     "/api/v1.0/stands/": {
       "get": {
+        "tags": [
+          "Feira"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -619,6 +703,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Feira"
+        ],
         "description": "",
         "parameters": [
           {
@@ -649,6 +736,9 @@
     },
     "/api/v1.0/marketvendors/{id}": {
       "get": {
+        "tags": [
+          "Feirante"
+        ],
         "description": "",
         "parameters": [
           {
@@ -668,6 +758,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Feirante"
+        ],
         "description": "",
         "parameters": [
           {
@@ -687,6 +780,9 @@
         }
       },
       "patch": {
+        "tags": [
+          "Feirante"
+        ],
         "description": "",
         "parameters": [
           {
@@ -732,6 +828,9 @@
     },
     "/api/v1.0/marketvendors/": {
       "get": {
+        "tags": [
+          "Feirante"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -741,6 +840,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Feirante"
+        ],
         "description": "",
         "parameters": [
           {
@@ -777,6 +879,9 @@
     },
     "/api/v1.0/marketvendors/login": {
       "post": {
+        "tags": [
+          "Feirante"
+        ],
         "description": "",
         "parameters": [
           {
@@ -807,6 +912,9 @@
     },
     "/api/v1.0/marketvendors/nome/{search}": {
       "get": {
+        "tags": [
+          "Feirante"
+        ],
         "description": "",
         "parameters": [
           {
@@ -828,6 +936,9 @@
     },
     "/api/v1.0/marketvendors/email/{search}": {
       "get": {
+        "tags": [
+          "Feirante"
+        ],
         "description": "",
         "parameters": [
           {
@@ -849,6 +960,9 @@
     },
     "/api/v1.0/condominium/{id}": {
       "get": {
+        "tags": [
+          "Condominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -868,6 +982,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Condominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -887,6 +1004,9 @@
         }
       },
       "patch": {
+        "tags": [
+          "Condominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -956,6 +1076,9 @@
     },
     "/api/v1.0/condominium/": {
       "get": {
+        "tags": [
+          "Condominio"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -965,6 +1088,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Condominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1025,6 +1151,9 @@
     },
     "/api/v1.0/condominium/login": {
       "post": {
+        "tags": [
+          "Condominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1055,6 +1184,9 @@
     },
     "/api/v1.0/condominium/nome/{search}": {
       "get": {
+        "tags": [
+          "Condominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1076,6 +1208,9 @@
     },
     "/api/v1.0/condominium/endereco/{search}": {
       "get": {
+        "tags": [
+          "Condominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1097,6 +1232,9 @@
     },
     "/api/v1.0/condominium/tudo/{search}": {
       "get": {
+        "tags": [
+          "Condominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1118,6 +1256,9 @@
     },
     "/api/v1.0/marketcondominium/{id}": {
       "get": {
+        "tags": [
+          "FeiraCondominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1137,6 +1278,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "FeiraCondominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1156,6 +1300,9 @@
         }
       },
       "patch": {
+        "tags": [
+          "FeiraCondominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1174,6 +1321,12 @@
                   "example": "any"
                 },
                 "marketVendorId": {
+                  "example": "any"
+                },
+                "status": {
+                  "example": "any"
+                },
+                "approvalDate": {
                   "example": "any"
                 }
               }
@@ -1195,6 +1348,9 @@
     },
     "/api/v1.0/marketcondominium/": {
       "get": {
+        "tags": [
+          "FeiraCondominio"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -1204,6 +1360,9 @@
         }
       },
       "post": {
+        "tags": [
+          "FeiraCondominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1237,6 +1396,9 @@
     },
     "/api/v1.0/marketcondominium/nome/{search}": {
       "get": {
+        "tags": [
+          "FeiraCondominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1258,6 +1420,33 @@
     },
     "/api/v1.0/marketcondominium/condominio/{id}": {
       "get": {
+        "tags": [
+          "FeiraCondominio"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1.0/marketcondominium/condominio/{id}/produtos": {
+      "get": {
+        "tags": [
+          "FeiraCondominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1279,6 +1468,9 @@
     },
     "/api/v1.0/marketcondominium/condominio/{id}/desconto": {
       "get": {
+        "tags": [
+          "FeiraCondominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1300,6 +1492,9 @@
     },
     "/api/v1.0/marketcondominium/feirante/{id}": {
       "get": {
+        "tags": [
+          "FeiraCondominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1318,6 +1513,9 @@
     },
     "/api/v1.0/marketcondominium/feirante/{id}/aprovado": {
       "get": {
+        "tags": [
+          "FeiraCondominio"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1336,6 +1534,9 @@
     },
     "/api/v1.0/orders/{id}": {
       "get": {
+        "tags": [
+          "Pedido"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1355,6 +1556,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Pedido"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1374,6 +1578,9 @@
         }
       },
       "patch": {
+        "tags": [
+          "Pedido"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1425,6 +1632,9 @@
     },
     "/api/v1.0/orders/": {
       "get": {
+        "tags": [
+          "Pedido"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -1434,6 +1644,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Pedido"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1473,6 +1686,9 @@
     },
     "/api/v1.0/orders/pagamento/{search}": {
       "get": {
+        "tags": [
+          "Pedido"
+        ],
         "description": "",
         "parameters": [
           {

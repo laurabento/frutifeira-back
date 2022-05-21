@@ -25,7 +25,7 @@ app.use("/api/v1.0/marketvendors/", feirantes);
 app.use("/api/v1.0/condominium/", condominios);
 app.use("/api/v1.0/marketcondominium/", feiranteCondominios);
 app.use("/api/v1.0/orders/", pedidos);
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 //Idiomatic expression in express to route and respond to a client request
 app.get("/", (req, res) => {

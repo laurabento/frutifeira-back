@@ -9,6 +9,7 @@ var lodash = require("lodash");
 router
   .route("/:id")
   .get(authorize(), async (req, res) => {
+    // #swagger.tags = ['Condominio']
     const id = req.params.id;
     try {
       if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -27,6 +28,7 @@ router
     }
   })
   .patch(authorize(), async (req, res) => {
+    // #swagger.tags = ['Condominio']
     console.log("patch");
     const id = req.params.id;
     const {
@@ -74,6 +76,7 @@ router
     }
   })
   .delete(authorize(), async (req, res) => {
+    // #swagger.tags = ['Condominio']
     const id = req.params.id;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       const condo = await Condominium.findOne({ _id: id });
@@ -98,6 +101,7 @@ router
 router
   .route("/")
   .get(async (req, res) => {
+    // #swagger.tags = ['Condominio']
     try {
       const condos = await Condominium.find();
       res.status(200).json(condos);
@@ -106,6 +110,7 @@ router
     }
   })
   .post(async (req, res) => {
+    // #swagger.tags = ['Condominio']
     const {
       name,
       email,
@@ -153,6 +158,7 @@ router
   });
 
 router.route("/login").post(async (req, res) => {
+  // #swagger.tags = ['Condominio']
   const { email, password } = req.body;
   const authentication = { email, password };
   try {
@@ -184,6 +190,7 @@ router.route("/login").post(async (req, res) => {
 });
 
 router.route("/nome/:search").get(authorize(), async (req, res) => {
+  // #swagger.tags = ['Condominio']
   const name = req.params.search;
   try {
     const condos = await Condominium.find({
@@ -201,6 +208,7 @@ router.route("/nome/:search").get(authorize(), async (req, res) => {
 });
 
 router.route("/endereco/:search").get(authorize(), async (req, res) => {
+  // #swagger.tags = ['Condominio']
   const address = req.params.search;
   try {
     const condos = await Condominium.find({
@@ -218,6 +226,7 @@ router.route("/endereco/:search").get(authorize(), async (req, res) => {
 });
 
 router.route("/tudo/:search").get(authorize(), async (req, res) => {
+  // #swagger.tags = ['Condominio']
   const search = req.params.search;
   const rgx = (pattern) => new RegExp(`.*${pattern}.*`);
   const searchRgx = rgx(search);

@@ -8,6 +8,7 @@ var lodash = require("lodash");
 router
   .route("/:id")
   .get(async (req, res) => {
+    // #swagger.tags = ['Usuario']
     const id = req.params.id;
     try {
       if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -26,6 +27,7 @@ router
     }
   })
   .patch(async (req, res) => {
+    // #swagger.tags = ['Usuario']
     const id = req.params.id;
     const { name, email, password, cpf, phone, card, condoId } = req.body;
     const user = { name, email, password, cpf, phone, card, condoId };
@@ -48,6 +50,7 @@ router
     }
   })
   .delete(async (req, res) => {
+    // #swagger.tags = ['Usuario']
     const id = req.params.id;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       const user = await User.findOne({ _id: id });
@@ -72,6 +75,7 @@ router
 router
   .route("/")
   .get(async (req, res) => {
+    // #swagger.tags = ['Usuario']
     try {
       const users = await User.find();
       res.status(200).json(users);
@@ -80,6 +84,7 @@ router
     }
   })
   .post(async (req, res) => {
+    // #swagger.tags = ['Usuario']
     const { name, email, password, cpf, phone, card, condoId } = req.body;
     const user = { name, email, password, cpf, phone, card, condoId };
     try {
@@ -101,6 +106,7 @@ router
   });
 
 router.route("/login").post(async (req, res) => {
+  // #swagger.tags = ['Usuario']
   const { email, password } = req.body;
   const authentication = { email, password };
   try {
@@ -132,6 +138,7 @@ router.route("/login").post(async (req, res) => {
 });
 
 router.route("/nome/:search").get(async (req, res) => {
+  // #swagger.tags = ['Usuario']
   const name = req.params.search;
   try {
     const users = await User.find({
@@ -149,6 +156,7 @@ router.route("/nome/:search").get(async (req, res) => {
 });
 
 router.route("/email/:search").get(async (req, res) => {
+  // #swagger.tags = ['Usuario']
   const email = req.params.search;
   try {
     const users = await User.find({
