@@ -125,7 +125,10 @@ router
             const id = req.params.id;
             const market = await MarketVendor.findById({_id: id});
 
-            res.status(200).json(market.name);
+            var obj = {};
+            obj.marketVendorName = market.marketVendorName;
+            obj.product_type = market.product_type;
+            res.status(200).json(obj);
         } catch (error) {
             console.log(error);
         }
