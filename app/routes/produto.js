@@ -213,7 +213,7 @@ router.route("/feirante/:id/nome").get(async (req, res) => {
     const market = await MarketVendor.findById({ _id: id });
 
     var obj = {};
-    obj.name = market.name;
+    obj.name = market.stand_name;
     obj.product_type = market.product_type;
     res.status(200).json(obj);
   } catch (error) {
