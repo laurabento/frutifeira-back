@@ -32,8 +32,8 @@ router
     })
     .patch(authorize(), async(req, res) => {
         const id = req.params.id;
-        const { condominiumId, marketVendorId } = req.body;
-        const condo = { condominiumId, marketVendorId };
+        const { condominiumId, marketVendorId, status, approvalDate } = req.body;
+        const condo = { condominiumId, marketVendorId, status, approvalDate };
         try {
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
                 const updatedCondo = await MarketCondominium.updateOne({ _id: id }, condo);
@@ -126,11 +126,11 @@ router
 
 router
     .route("/condominio/:id")
-    .get(authorize(), async(req, res) => {
+    .get(async(req, res) => {
         const id = req.params.id;
         try {
             console.log(id);
-            const marketCondos = await MarketCondominium.find({ condominiumId: id });
+            var marketCondos = await MarketCondominium.find({ condominiumId: id });
             console.log(marketCondos);
             if (!marketCondos || marketCondos.length === 0) {
                 res.status(404).json({ error: "Nenhum condomínio encontrado com esse Id!" });
@@ -138,7 +138,18 @@ router
             } else {
                 var marketVendorsIds = [];
                 marketCondos.forEach(element => marketVendorsIds.push(element.marketVendorId));
+
                 var records = await MarketVendor.find({ '_id': { $in: marketVendorsIds } });
+                records = JSON.parse(JSON.stringify(records));
+
+                for (var i = 0; i < records.length; i++) {
+                    if (marketCondos.some(e => e.marketVendorId === records[i]._id)) {
+                        var market = marketCondos.filter(x => x.marketVendorId === records[i]._id);
+                        records[i].status = market[0].status;
+                        records[i].marketCondominiumId = market[0]._id;
+                        records[i].approvalDate = market[0].approvalDate;
+                    }
+                }
                 const prods = await Product.find({ marketVendorId: { $in: marketVendorsIds } });
                 records = JSON.parse(JSON.stringify(records));
                 records.forEach(function(entry) {
@@ -160,6 +171,28 @@ router
     });
 
 router
+    .route("/condominio/:id/produtos")
+    .get( async(req, res) => {
+        const id = req.params.id;
+        try {
+            console.log(id);
+            const marketCondos = await MarketCondominium.find({ condominiumId: id });
+            console.log(marketCondos);
+            if (!marketCondos || marketCondos.length === 0) {
+                res.status(404).json({ error: "Nenhum condomínio encontrado com esse Id!" });
+                return;
+            } else {
+                var marketVendorsIds = [];
+                marketCondos.forEach(element => marketVendorsIds.push(element.marketVendorId));
+                const prods = await Product.find({ marketVendorId: { $in: marketVendorsIds } });
+                res.status(200).json(prods);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+router
     .route("/condominio/:id/desconto")
     .get(authorize(), async(req, res) => {
         const id = req.params.id;
@@ -172,9 +205,9 @@ router
             } else {
                 var marketVendorsIds = [];
                 marketCondos.forEach(element => marketVendorsIds.push(element.marketVendorId));
-                
-                const prods = await Product.find({ marketVendorId: { $in: marketVendorsIds } }).limit(7).sort({ discount : -1 });
-                
+
+                const prods = await Product.find({ marketVendorId: { $in: marketVendorsIds } }).limit(7).sort({ discount: -1 });
+
                 res.status(200).json(prods);
             }
         } catch (error) {
