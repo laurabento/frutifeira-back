@@ -126,7 +126,7 @@ router
             const market = await MarketVendor.findById({_id: id});
 
             var obj = {};
-            obj.marketVendorName = market.marketVendorName;
+            obj.name = market.name;
             obj.product_type = market.product_type;
             res.status(200).json(obj);
         } catch (error) {
