@@ -160,6 +160,28 @@ router
     });
 
 router
+    .route("/condominio/:id/produtos")
+    .get(authorize(), async(req, res) => {
+        const id = req.params.id;
+        try {
+            console.log(id);
+            const marketCondos = await MarketCondominium.find({ condominiumId: id });
+            console.log(marketCondos);
+            if (!marketCondos || marketCondos.length === 0) {
+                res.status(404).json({ error: "Nenhum condomínio encontrado com esse Id!" });
+                return;
+            } else {
+                var marketVendorsIds = [];
+                marketCondos.forEach(element => marketVendorsIds.push(element.marketVendorId));
+                const prods = await Product.find({ marketVendorId: { $in: marketVendorsIds } });
+                res.status(200).json(prods);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+router
     .route("/condominio/:id/desconto")
     .get(authorize(), async(req, res) => {
         const id = req.params.id;
