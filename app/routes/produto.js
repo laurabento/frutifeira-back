@@ -99,7 +99,7 @@ router
             products.forEach(function(entry) {
                 entry.marketVendorName = market.name;
             })
-            products.marketVendorName = market.name;
+            products.push(market.name);
 
             res.status(200).json(products);
         } catch (error) {
