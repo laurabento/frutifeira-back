@@ -61,6 +61,8 @@ router
     };
     try {
       if (id.match(/^[0-9a-fA-F]{24}$/)) {
+        lodash.omit(condo, "password");
+        condo.password = await bcrypt.hash(password, 10);
         const updatedCondo = await Condominium.updateOne({ _id: id }, condo);
         if (updatedCondo.matchedCount === 0) {
           res.status(422).json({ error: "Condomínio não encontrado!" });

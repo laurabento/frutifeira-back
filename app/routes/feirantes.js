@@ -36,6 +36,8 @@ router
     const market = { name, product_type, email, password };
     try {
       if (id.match(/^[0-9a-fA-F]{24}$/)) {
+        lodash.omit(market, "password");
+        market.password = await bcrypt.hash(password, 10);
         const updatedMarket = await MarketVendor.updateOne({ _id: id }, market);
         if (updatedMarket.matchedCount === 0) {
           res.status(422).json({ error: "Feirante não encontrado!" });
