@@ -5,7 +5,8 @@ module.exports = {
 
     calcOriginalDiscount(product) {
         const frutifeiraFee = 0.02;
-        product.finalPrice = (product.price * (1 - product.discount)) / (1 - frutifeiraFee);
+        product.price = product.price * (1 + frutifeiraFee);
+        product.finalPrice = product.price * (1 - product.discount);
         return product;
     }
 }
