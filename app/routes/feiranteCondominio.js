@@ -40,7 +40,7 @@ router
       if (id.match(/^[0-9a-fA-F]{24}$/)) {
         const updatedCondo = await MarketCondominium.updateOne(
           { _id: id },
-          condo,
+          condo
         );
         if (updatedCondo.matchedCount === 0) {
           res.status(422).json({ error: "Condomínio não encontrado!" });
@@ -86,7 +86,7 @@ router
       const condos = await MarketCondominium.find();
       var marketVendorsIds = [];
       condos.forEach((element) =>
-        marketVendorsIds.push(element.marketVendorId),
+        marketVendorsIds.push(element.marketVendorId)
       );
       var records = await MarketVendor.find({ _id: { $in: marketVendorsIds } });
       const prods = await Product.find({
@@ -157,7 +157,7 @@ router.route("/condominio/:id").get(async (req, res) => {
     } else {
       var marketVendorsIds = [];
       marketCondos.forEach((element) =>
-        marketVendorsIds.push(element.marketVendorId),
+        marketVendorsIds.push(element.marketVendorId)
       );
 
       var records = await MarketVendor.find({ _id: { $in: marketVendorsIds } });
@@ -166,7 +166,7 @@ router.route("/condominio/:id").get(async (req, res) => {
       for (var i = 0; i < records.length; i++) {
         if (marketCondos.some((e) => e.marketVendorId === records[i]._id)) {
           var market = marketCondos.filter(
-            (x) => x.marketVendorId === records[i]._id,
+            (x) => x.marketVendorId === records[i]._id
           );
           records[i].status = market[0].status;
           records[i].marketCondominiumId = market[0]._id;
@@ -210,16 +210,25 @@ router.route("/condominio/:id/produtos").get(async (req, res) => {
     } else {
       var marketVendorsIds = [];
       marketCondos.forEach((element) =>
-        marketVendorsIds.push(element.marketVendorId),
+        marketVendorsIds.push(element.marketVendorId)
       );
+
+      var records = await MarketVendor.find({ 
+        _id: { $in: marketVendorsIds } 
+      });
+
       var prods = await Product.find({
         marketVendorId: { $in: marketVendorsIds },
       });
 
-      for (var i = 0; i < prod.length; i++) {
-        prod[i].stand_name = market[0].stand_name;
-      }
-
+      records.forEach(function (entry) {
+        prods.forEach(function (prod) {
+          if (prod.marketVendorId == entry._id.toString()) {
+            prod.products.stand_name = entry.stand_name;
+          }
+        });
+      });
+      
       res.status(200).json(prods);
     }
   } catch (error) {
@@ -227,7 +236,7 @@ router.route("/condominio/:id/produtos").get(async (req, res) => {
   }
 });
 
-router.route("/condominio/:id/desconto").get( async (req, res) => {
+router.route("/condominio/:id/desconto").get(async (req, res) => {
   // #swagger.tags = ['FeiraCondominio']
   const id = req.params.id;
   try {
@@ -241,7 +250,7 @@ router.route("/condominio/:id/desconto").get( async (req, res) => {
     } else {
       var marketVendorsIds = [];
       marketCondos.forEach((element) =>
-        marketVendorsIds.push(element.marketVendorId),
+        marketVendorsIds.push(element.marketVendorId)
       );
 
       const prods = await Product.find({
@@ -269,7 +278,7 @@ router.route("/feirante/:id").get(authorize(), async (req, res) => {
     for (var i = 0; i < allCondos.length; i++) {
       if (marketCondos.some((e) => e.condominiumId === allCondos[i]._id)) {
         var market = marketCondos.filter(
-          (x) => x.condominiumId === allCondos[i]._id,
+          (x) => x.condominiumId === allCondos[i]._id
         );
         allCondos[i].status = market[0].status;
         allCondos[i].approvalDate = market[0].approvalDate;
@@ -294,7 +303,7 @@ router.route("/feirante/:id/aprovado").get(authorize(), async (req, res) => {
 
     var condominiumIds = [];
     marketCondos.forEach((element) =>
-      condominiumIds.push(element.condominiumId),
+      condominiumIds.push(element.condominiumId)
     );
 
     var records = await Condominium.find({ _id: { $in: condominiumIds } });
@@ -303,7 +312,7 @@ router.route("/feirante/:id/aprovado").get(authorize(), async (req, res) => {
     for (var i = 0; i < records.length; i++) {
       if (marketCondos.some((e) => e.condominiumId === records[i]._id)) {
         var market = marketCondos.filter(
-          (x) => x.condominiumId === records[i]._id,
+          (x) => x.condominiumId === records[i]._id
         );
         records[i].status = market[0].status;
         records[i].approvalDate = market[0].approvalDate;
