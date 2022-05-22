@@ -119,8 +119,8 @@ router.route("/login").post(async (req, res) => {
     const existingMarket = await MarketVendor.findOne({ email: email });
     if (existingMarket === null || !existingMarket) {
       res
-        .status(422)
-        .json({ error: "Feirante não encontrado!", status: "422" });
+        .status(404)
+        .json({ error: "Feirante não encontrado!", status: "404" });
       return false;
     }
     if (
@@ -136,7 +136,7 @@ router.route("/login").post(async (req, res) => {
         id: existingMarket._id,
       });
     } else {
-      res.status(422).json({ error: "Senha incorreta!", status: "422" });
+      res.status(404).json({ error: "Senha incorreta!", status: "404" });
     }
   } catch (error) {
     console.log(error);

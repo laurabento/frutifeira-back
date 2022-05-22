@@ -167,8 +167,8 @@ router.route("/login").post(async (req, res) => {
     const existingCondo = await Condominium.findOne({ email: email });
     if (!existingCondo) {
       res
-        .status(422)
-        .json({ error: "Condomínio não encontrado!", status: "422" });
+        .status(404)
+        .json({ error: "Condomínio não encontrado!", status: "404" });
       return;
     }
     if (
@@ -184,7 +184,7 @@ router.route("/login").post(async (req, res) => {
         id: existingCondo._id,
       });
     } else {
-      res.status(422).json({ error: "Senha incorreta!", status: "422" });
+      res.status(404).json({ error: "Senha incorreta!", status: "404" });
     }
   } catch (error) {
     console.log(error);
