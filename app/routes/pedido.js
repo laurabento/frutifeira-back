@@ -28,8 +28,8 @@ router
   .patch(authorize(), async (req, res) => {
     // #swagger.tags = ['Pedido']
     const id = req.params.id;
-    const { userId, totalPrice, qrcode, payment, scheduling, items } = req.body;
-    const order = { userId, totalPrice, qrcode, payment, scheduling, items };
+    const { userId, totalPrice, qrcode, payment, scheduling, cardNumber, cardName, cardExpirationDate, cardSecurityCode, items } = req.body;
+    const order = { userId, totalPrice, qrcode, payment, scheduling, cardNumber, cardName, cardExpirationDate, cardSecurityCode, items };
     try {
       if (id.match(/^[0-9a-fA-F]{24}$/)) {
         const updatedOrder = await Order.updateOne({ _id: id }, order);
@@ -80,8 +80,8 @@ router
   })
   .post(authorize(), async (req, res) => {
     // #swagger.tags = ['Pedido']
-    const { userId, totalPrice, qrcode, payment, scheduling, items } = req.body;
-    const order = { userId, totalPrice, qrcode, payment, scheduling, items };
+    const { userId, totalPrice, qrcode, payment, scheduling, cardNumber, cardName, cardExpirationDate, cardSecurityCode, items } = req.body;
+    const order = { userId, totalPrice, qrcode, payment, scheduling, cardNumber, cardName, cardExpirationDate, cardSecurityCode, items };
     try {
       const orders = await Order.find({
         userId: { $regex: ".*" + userId + ".*" },
@@ -114,6 +114,26 @@ router.route("/pagamento/:search").get(authorize(), async (req, res) => {
         .json({ error: "Nenhum usuário encontrado com esse nome!" });
       return;
     } else res.status(200).json(orders);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.route("/usuario/:id").get(authorize(), async (req, res) => {
+  // #swagger.tags = ['Pedido']
+  const id = req.params.id;
+  try {
+    if (id.match(/^[0-9a-fA-F]{24}$/)) {
+      const orders = await Order.find({ userId: id });
+      if (!orders || orders.length === 0) {
+        res.status(404).json({ error: "Pedidos não encontrados!" });
+        return;
+      }
+      res.status(200).json(orders);
+    } else {
+      res.status(404).json({ error: "Id do usuário inválido!" });
+      return;
+    }
   } catch (error) {
     console.log(error);
   }

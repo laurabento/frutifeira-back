@@ -4,6 +4,10 @@ const Order = mongoose.model('order', {
   totalPrice: Number, 
   qrcode: String, 
   payment: String, 
+  cardNumber: String, 
+  cardName: String, 
+  cardExpirationDate: String, 
+  cardSecurityCode: String, 
   scheduling: Date,
   items: [
     {
