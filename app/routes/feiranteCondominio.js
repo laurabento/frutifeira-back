@@ -222,7 +222,7 @@ router.route("/condominio/:id/produtos").get(async (req, res) => {
   }
 });
 
-router.route("/condominio/:id/desconto").get(authorize(), async (req, res) => {
+router.route("/condominio/:id/desconto").get( async (req, res) => {
   // #swagger.tags = ['FeiraCondominio']
   const id = req.params.id;
   try {
