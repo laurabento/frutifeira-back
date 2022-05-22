@@ -254,11 +254,24 @@ router.route("/condominio/:id/desconto").get(async (req, res) => {
         marketVendorsIds.push(element.marketVendorId)
       );
 
-      const prods = await Product.find({
+      var records = await MarketVendor.find({ 
+        _id: { $in: marketVendorsIds } 
+      });
+
+      var prods = await Product.find({
         marketVendorId: { $in: marketVendorsIds },
       })
         .limit(7)
         .sort({ discount: -1 });
+      prods = JSON.parse(JSON.stringify(prods));
+
+      records.forEach(function (entry) {
+        prods.forEach(function (prod) {
+          if (prod.marketVendorId == entry._id.toString()) {
+            prod.stand_name = entry.stand_name;
+          }
+        });
+      });
 
       res.status(200).json(prods);
     }
