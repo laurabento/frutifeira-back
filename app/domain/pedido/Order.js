@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 const Order = mongoose.model('order', { 
   userId: String, 
   totalPrice: Number, 
-  scheduling: Date,
+  scheduling: {
+    schedule: String,
+    weekDay: String
+  },
   payment: {
     cardCPF: String, 
     cardDate: String, 
