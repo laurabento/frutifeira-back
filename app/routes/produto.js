@@ -159,6 +159,7 @@ router
       products = JSON.parse(JSON.stringify(products));
       products.forEach(function (entry) {
         entry.marketVendorName = market.name;
+        entry.stand_name = market.stand_name;
       });
 
       res.status(200).json(products);
