@@ -28,8 +28,8 @@ router
   .patch(authorize(), async (req, res) => {
     // #swagger.tags = ['Pedido']
     const id = req.params.id;
-    const { userId, totalPrice, qrcode, payment, scheduling, cardNumber, cardName, cardExpirationDate, cardSecurityCode, items } = req.body;
-    const order = { userId, totalPrice, qrcode, payment, scheduling, cardNumber, cardName, cardExpirationDate, cardSecurityCode, items };
+    const { userId, totalPrice, payment, scheduling, items } = req.body;
+    const order = { userId, totalPrice, payment, scheduling, items };
     try {
       if (id.match(/^[0-9a-fA-F]{24}$/)) {
         const updatedOrder = await Order.updateOne({ _id: id }, order);
@@ -80,8 +80,8 @@ router
   })
   .post(authorize(), async (req, res) => {
     // #swagger.tags = ['Pedido']
-    const { userId, totalPrice, qrcode, payment, scheduling, cardNumber, cardName, cardExpirationDate, cardSecurityCode, items } = req.body;
-    const order = { userId, totalPrice, qrcode, payment, scheduling, cardNumber, cardName, cardExpirationDate, cardSecurityCode, items };
+    const { userId, totalPrice, payment, scheduling, items } = req.body;
+    const order = { userId, totalPrice, payment, scheduling, items };
     try {
       const orders = await Order.find({
         userId: { $regex: ".*" + userId + ".*" },

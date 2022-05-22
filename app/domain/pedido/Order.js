@@ -2,17 +2,21 @@ const mongoose = require('mongoose');
 const Order = mongoose.model('order', { 
   userId: String, 
   totalPrice: Number, 
-  qrcode: String, 
-  payment: String, 
-  cardNumber: String, 
-  cardName: String, 
-  cardExpirationDate: String, 
-  cardSecurityCode: String, 
   scheduling: Date,
+  payment: {
+    cardCPF: String, 
+    cardDate: String, 
+    cardName: String, 
+    cardNumber: String, 
+    cardSecrectyNumber: String, 
+    typeCredit: String, 
+  },
   items: [
     {
-      productId: String,
-      unitprice: Number,
+      id: String,
+      name: String,
+      price: String,
+      stand_name: String,
       amount: Number
     }
   ] 
