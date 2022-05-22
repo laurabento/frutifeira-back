@@ -220,11 +220,12 @@ router.route("/condominio/:id/produtos").get(async (req, res) => {
       var prods = await Product.find({
         marketVendorId: { $in: marketVendorsIds },
       });
+      prods = JSON.parse(JSON.stringify(prods));
 
       records.forEach(function (entry) {
         prods.forEach(function (prod) {
           if (prod.marketVendorId == entry._id.toString()) {
-            prod.products.stand_name = entry.stand_name;
+            prod.stand_name = entry.stand_name;
           }
         });
       });
