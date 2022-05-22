@@ -3,6 +3,8 @@ let router = express.Router();
 const authorize = require("../../authorization-middleware");
 const Order = require("../domain/pedido/Order");
 const OrderUtils = require("../domain/helper");
+var bcrypt = require("bcryptjs");
+var lodash = require("lodash");
 
 router
   .route("/:id")
@@ -29,7 +31,11 @@ router
     // #swagger.tags = ['Pedido']
     const id = req.params.id;
     const { userId, totalPrice, payment, scheduling, items } = req.body;
-    const order = { userId, totalPrice, payment, scheduling, items };
+    var order = { userId, totalPrice, payment, scheduling, items };
+    lodash.omit(payment.cardNumber, "payment.cardNumber");
+    order.payment.cardNumber = await bcrypt.hash(payment.cardNumber, 10);
+    lodash.omit(payment.cardSecrectyNumber, "payment.cardSecrectyNumber");
+    order.payment.cardSecrectyNumber = await bcrypt.hash(payment.cardSecrectyNumber, 10);
     try {
       if (id.match(/^[0-9a-fA-F]{24}$/)) {
         const updatedOrder = await Order.updateOne({ _id: id }, order);
@@ -82,6 +88,10 @@ router
     // #swagger.tags = ['Pedido']
     const { userId, totalPrice, payment, scheduling, items } = req.body;
     const order = { userId, totalPrice, payment, scheduling, items };
+    lodash.omit(payment.cardNumber, "payment.cardNumber");
+    order.payment.cardNumber = await bcrypt.hash(payment.cardNumber, 10);
+    lodash.omit(payment.cardSecrectyNumber, "payment.cardSecrectyNumber");
+    order.payment.cardSecrectyNumber = await bcrypt.hash(payment.cardSecrectyNumber, 10);
     try {
       const orders = await Order.find({
         userId: { $regex: ".*" + userId + ".*" },
