@@ -212,9 +212,14 @@ router.route("/condominio/:id/produtos").get(async (req, res) => {
       marketCondos.forEach((element) =>
         marketVendorsIds.push(element.marketVendorId),
       );
-      const prods = await Product.find({
+      var prods = await Product.find({
         marketVendorId: { $in: marketVendorsIds },
       });
+
+      for (var i = 0; i < prod.length; i++) {
+        prod[i].stand_name = market[0].stand_name;
+      }
+
       res.status(200).json(prods);
     }
   } catch (error) {
