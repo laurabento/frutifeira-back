@@ -14,7 +14,7 @@ const Order = mongoose.model('order', {
     cardSecrectyNumber: String, 
     typeCredit: String, 
   },
-  items: [
+  products: [
     {
       id: String,
       name: String,
