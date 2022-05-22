@@ -14,13 +14,19 @@ const Order = mongoose.model('order', {
     cardSecrectyNumber: String, 
     typeCredit: String, 
   },
-  products: [
+  items: [
     {
-      id: String,
-      name: String,
-      price: String,
+      products: [
+        {
+          id: String,
+          name: String,
+          price: String,
+          stand_name: String,
+          amount: Number
+        }
+      ],      
       stand_name: String,
-      amount: Number
+      total: Number
     }
   ] 
 });
