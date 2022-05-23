@@ -17,5 +17,7 @@ module.exports = {
         order.orderDate = dateNow;
         order.orderNumber = count + 1;
         order.status = "Pendente";
+
+        return order;
     }
 }
