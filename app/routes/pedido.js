@@ -110,7 +110,8 @@ router
         userId: { $regex: ".*" + userId + ".*" },
       }).limit(5);
       if (orders && orders.length !== 0) {
-        order.totalPrice = OrderUtils.calcPriceFirstOrder(totalPrice);
+        // order.totalPrice = OrderUtils.calcPriceFirstOrder(totalPrice);
+        console.log(order.totalPrice);
       }
       console.log(Order.estimatedDocumentCount());
       const newOrder = await Order.create(
