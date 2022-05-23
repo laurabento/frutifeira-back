@@ -30,8 +30,16 @@ router
   .patch(authorize(), async (req, res) => {
     // #swagger.tags = ['Pedido']
     const id = req.params.id;
-    const { userId, totalPrice, payment, scheduling, items, condominiumId } = req.body;
-    var order = { userId, totalPrice, payment, scheduling, items, condominiumId };
+    const { userId, totalPrice, payment, scheduling, items, condominiumId } =
+      req.body;
+    var order = {
+      userId,
+      totalPrice,
+      payment,
+      scheduling,
+      items,
+      condominiumId,
+    };
     // lodash.omit(payment.cardNumber, "payment.cardNumber");
     // order.payment.cardNumber = await bcrypt.hash(payment.cardNumber, 10);
     // lodash.omit(payment.cardSecrectyNumber, "payment.cardSecrectyNumber");
@@ -86,8 +94,16 @@ router
   })
   .post(authorize(), async (req, res) => {
     // #swagger.tags = ['Pedido']
-    const { userId, totalPrice, payment, scheduling, items, condominiumId } = req.body;
-    var order = { userId, totalPrice, payment, scheduling, items, condominiumId };
+    const { userId, totalPrice, payment, scheduling, items, condominiumId } =
+      req.body;
+    var order = {
+      userId,
+      totalPrice,
+      payment,
+      scheduling,
+      items,
+      condominiumId,
+    };
     // lodash.omit(payment.cardNumber, "payment.cardNumber");
     // order.payment.cardNumber = await bcrypt.hash(payment.cardNumber, 10);
     // lodash.omit(payment.cardSecrectyNumber, "payment.cardSecrectyNumber");
@@ -100,13 +116,13 @@ router
         order.totalPrice = OrderUtils.calcPriceFirstOrder(totalPrice);
       }
       console.log(Order.estimatedDocumentCount());
-      const newOrder = await Order.create(OrderUtils.newOrder(order, Order.estimatedDocumentCount()));
-      res
-        .status(201)
-        .json({
-          message: "O pedido foi inserido com sucesso!",
-          order: newOrder,
-        });
+      const newOrder = await Order.create(
+        OrderUtils.newOrder(order, Order.estimatedDocumentCount()),
+      );
+      res.status(201).json({
+        message: "O pedido foi inserido com sucesso!",
+        order: newOrder,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -150,43 +166,45 @@ router.route("/usuario/:id").get(authorize(), async (req, res) => {
   }
 });
 
-router.route("/feirante/:marketid/condominio/:condominiumid").get(authorize(), async (req, res) => {
-  // #swagger.tags = ['Pedido']
-  const marketid = req.params.marketid;
-  const condominiumid = req.params.condominiumid;
-  try {
-    if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      var orders = await Order.find({ condominiumId: condominiumid });
+router
+  .route("/feirante/:marketid/condominio/:condominiumid")
+  .get(authorize(), async (req, res) => {
+    // #swagger.tags = ['Pedido']
+    const marketid = req.params.marketid;
+    const condominiumid = req.params.condominiumid;
+    try {
+      if (condominiumid.match(/^[0-9a-fA-F]{24}$/)) {
+        var orders = await Order.find({ condominiumId: condominiumid });
 
-      if (!orders || orders.length === 0) {
-        res.status(404).json({ error: "Pedidos não encontrados!" });
-        return;
-      }
-      var returnOrders = [];
+        if (!orders || orders.length === 0) {
+          res.status(404).json({ error: "Pedidos não encontrados!" });
+          return;
+        }
+        var returnOrders = [];
 
-      for (var i = 0; i < orders.length; i++) {
-        var skip = false;
-        for (var j = 0; j < orders[i].items.length; i++) {
-          for (var k = 0; k < orders[i].items[j].products.length; i++) {
-            if (orders[i].items[j].products[k].marketVendorId == marketid) {
-              returnOrders.push(orders[i]);
-              skip = true;
+        for (var i = 0; i < orders.length; i++) {
+          var skip = false;
+          for (var j = 0; j < orders[i].items.length; i++) {
+            for (var k = 0; k < orders[i].items[j].products.length; i++) {
+              if (orders[i].items[j].products[k].marketVendorId == marketid) {
+                returnOrders.push(orders[i]);
+                skip = true;
+                break;
+              }
+            }
+            if (skip) {
               break;
             }
           }
-          if (skip) {
-            break;
-          }
         }
+        res.status(200).json(returnOrders);
+      } else {
+        res.status(404).json({ error: "Id do usuário inválido!" });
+        return;
       }
-      res.status(200).json(returnOrders);
-    } else {
-      res.status(404).json({ error: "Id do usuário inválido!" });
-      return;
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
-});
+  });
 
 module.exports = router;
