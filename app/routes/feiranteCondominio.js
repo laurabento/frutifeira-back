@@ -147,7 +147,7 @@ router.route("/condominio/:id").get(async (req, res) => {
   const id = req.params.id;
   try {
     console.log(id);
-    var marketCondos = await MarketCondominium.find({ condominiumId: id });
+    var marketCondos = await MarketCondominium.find({ condominiumId: id, status: "Aprovado" });
     console.log(marketCondos);
     if (!marketCondos || marketCondos.length === 0) {
       res
