@@ -155,12 +155,30 @@ router.route("/feirante/:marketid/condominio/:condominiumid").get(authorize(), a
   const condominiumid = req.params.condominiumid;
   try {
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      const orders = await Order.find({ marketVendorId: marketid, condominiumId: condominiumid });
+      var orders = await Order.find({ condominiumId: condominiumid });
+
       if (!orders || orders.length === 0) {
         res.status(404).json({ error: "Pedidos não encontrados!" });
         return;
       }
-      res.status(200).json(orders);
+      var returnOrders = [];
+
+      for (var i = 0; i < orders.length; i++) {
+        var skip = false;
+        for (var j = 0; j < orders[i].items.length; i++) {
+          for (var k = 0; k < orders[i].items[j].products.length; i++) {
+            if (orders[i].items[j].products[k].marketVendorId == marketid) {
+              returnOrders.push(orders[i]);
+              skip = true;
+              break;
+            }
+          }
+          if (skip) {
+            break;
+          }
+        }
+      }
+      res.status(200).json(returnOrders);
     } else {
       res.status(404).json({ error: "Id do usuário inválido!" });
       return;
