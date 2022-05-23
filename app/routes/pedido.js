@@ -113,9 +113,11 @@ router
         // order.totalPrice = OrderUtils.calcPriceFirstOrder(totalPrice);
         console.log(order.totalPrice);
       }
-      console.log(Order.estimatedDocumentCount());
+      const allOrders = await Order.find();
+      console.log(allOrders.length);
+
       const newOrder = await Order.create(
-        OrderUtils.newOrder(order, Order.estimatedDocumentCount()),
+        OrderUtils.newOrder(order, allOrders.length),
       );
       res.status(201).json({
         message: "O pedido foi inserido com sucesso!",
