@@ -30,8 +30,15 @@ router
   .patch(authorize(), async (req, res) => {
     // #swagger.tags = ['Pedido']
     const id = req.params.id;
-    const { userId, totalPrice, payment, scheduling, items, condominiumId } =
-      req.body;
+    const {
+      userId,
+      totalPrice,
+      payment,
+      scheduling,
+      items,
+      condominiumId,
+      status,
+    } = req.body;
     var order = {
       userId,
       totalPrice,
@@ -39,6 +46,7 @@ router
       scheduling,
       items,
       condominiumId,
+      status,
     };
     // lodash.omit(payment.cardNumber, "payment.cardNumber");
     // order.payment.cardNumber = await bcrypt.hash(payment.cardNumber, 10);
