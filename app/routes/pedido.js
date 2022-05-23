@@ -30,8 +30,8 @@ router
   .patch(authorize(), async (req, res) => {
     // #swagger.tags = ['Pedido']
     const id = req.params.id;
-    const { userId, totalPrice, payment, scheduling, items } = req.body;
-    var order = { userId, totalPrice, payment, scheduling, items };
+    const { userId, totalPrice, payment, scheduling, items, condominiumId, marketVendorId } = req.body;
+    var order = { userId, totalPrice, payment, scheduling, items, condominiumId, marketVendorId };
     // lodash.omit(payment.cardNumber, "payment.cardNumber");
     // order.payment.cardNumber = await bcrypt.hash(payment.cardNumber, 10);
     // lodash.omit(payment.cardSecrectyNumber, "payment.cardSecrectyNumber");
@@ -86,8 +86,8 @@ router
   })
   .post(authorize(), async (req, res) => {
     // #swagger.tags = ['Pedido']
-    const { userId, totalPrice, payment, scheduling, items } = req.body;
-    var order = { userId, totalPrice, payment, scheduling, items };
+    const { userId, totalPrice, payment, scheduling, items, condominiumId, marketVendorId } = req.body;
+    var order = { userId, totalPrice, payment, scheduling, items, condominiumId, marketVendorId };
     // lodash.omit(payment.cardNumber, "payment.cardNumber");
     // order.payment.cardNumber = await bcrypt.hash(payment.cardNumber, 10);
     // lodash.omit(payment.cardSecrectyNumber, "payment.cardSecrectyNumber");
@@ -135,6 +135,27 @@ router.route("/usuario/:id").get(authorize(), async (req, res) => {
   try {
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       const orders = await Order.find({ userId: id });
+      if (!orders || orders.length === 0) {
+        res.status(404).json({ error: "Pedidos não encontrados!" });
+        return;
+      }
+      res.status(200).json(orders);
+    } else {
+      res.status(404).json({ error: "Id do usuário inválido!" });
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.route("/feirante/:marketid/condominio/:condominiumid").get(authorize(), async (req, res) => {
+  // #swagger.tags = ['Pedido']
+  const marketid = req.params.marketid;
+  const condominiumid = req.params.condominiumid;
+  try {
+    if (id.match(/^[0-9a-fA-F]{24}$/)) {
+      const orders = await Order.find({ marketVendorId: marketid, condominiumId: condominiumid });
       if (!orders || orders.length === 0) {
         res.status(404).json({ error: "Pedidos não encontrados!" });
         return;

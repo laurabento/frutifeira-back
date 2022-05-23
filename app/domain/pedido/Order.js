@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const Order = mongoose.model('order', { 
   userId: String, 
   totalPrice: Number, 
+  condominiumId: String,
+  marketVendorId: String,
   scheduling: {
     schedule: String,
     weekDay: String
