@@ -13,7 +13,8 @@ module.exports = {
     newOrder(order, count) {
         const timeElapsed = Date.now();
         const today = new Date(timeElapsed);
-        order.orderDate = today;
+        const dateNow = today.toISOString();
+        order.orderDate = dateNow;
         order.orderNumber = count + 1;
         order.status = "Pendente";
     }
