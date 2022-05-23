@@ -99,7 +99,8 @@ router
       if (orders && orders.length !== 0) {
         order.totalPrice = OrderUtils.calcPriceFirstOrder(totalPrice);
       }
-      const newOrder = await Order.create(order);
+      console.log(Order.estimatedDocumentCount());
+      const newOrder = await Order.create(OrderUtils.newOrder(order, Order.estimatedDocumentCount()));
       res
         .status(201)
         .json({
