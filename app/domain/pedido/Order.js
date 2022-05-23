@@ -3,7 +3,6 @@ const Order = mongoose.model('order', {
   userId: String, 
   totalPrice: Number, 
   condominiumId: String,
-  marketVendorId: String,
   scheduling: {
     schedule: String,
     weekDay: String
@@ -24,6 +23,7 @@ const Order = mongoose.model('order', {
           name: String,
           price: String,
           stand_name: String,
+          marketVendorId: String,
           amount: Number
         }
       ],      

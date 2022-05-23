@@ -30,8 +30,8 @@ router
   .patch(authorize(), async (req, res) => {
     // #swagger.tags = ['Pedido']
     const id = req.params.id;
-    const { userId, totalPrice, payment, scheduling, items, condominiumId, marketVendorId } = req.body;
-    var order = { userId, totalPrice, payment, scheduling, items, condominiumId, marketVendorId };
+    const { userId, totalPrice, payment, scheduling, items, condominiumId } = req.body;
+    var order = { userId, totalPrice, payment, scheduling, items, condominiumId };
     // lodash.omit(payment.cardNumber, "payment.cardNumber");
     // order.payment.cardNumber = await bcrypt.hash(payment.cardNumber, 10);
     // lodash.omit(payment.cardSecrectyNumber, "payment.cardSecrectyNumber");
@@ -86,8 +86,8 @@ router
   })
   .post(authorize(), async (req, res) => {
     // #swagger.tags = ['Pedido']
-    const { userId, totalPrice, payment, scheduling, items, condominiumId, marketVendorId } = req.body;
-    var order = { userId, totalPrice, payment, scheduling, items, condominiumId, marketVendorId };
+    const { userId, totalPrice, payment, scheduling, items, condominiumId } = req.body;
+    var order = { userId, totalPrice, payment, scheduling, items, condominiumId };
     // lodash.omit(payment.cardNumber, "payment.cardNumber");
     // order.payment.cardNumber = await bcrypt.hash(payment.cardNumber, 10);
     // lodash.omit(payment.cardSecrectyNumber, "payment.cardSecrectyNumber");
