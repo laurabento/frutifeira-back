@@ -5,6 +5,7 @@ const Order = require("../domain/pedido/Order");
 const OrderUtils = require("../domain/helper");
 var bcrypt = require("bcryptjs");
 var lodash = require("lodash");
+const Condominium = require("../domain/condominio/Condominium");
 
 router
   .route("/:id")
@@ -170,7 +171,10 @@ router
     const condominiumid = req.params.condominiumid;
     try {
       if (condominiumid.match(/^[0-9a-fA-F]{24}$/)) {
+        const condo = await Condominium.findById({ _id: condominiumid });
+
         var orders = await Order.find({ condominiumId: condominiumid });
+        orders = JSON.parse(JSON.stringify(orders));
 
         if (!orders || orders.length === 0) {
           res.status(404).json({ error: "Pedidos não encontrados!" });
@@ -183,6 +187,14 @@ router
           for (var j = 0; j < orders[i].items.length; i++) {
             for (var k = 0; k < orders[i].items[j].products.length; i++) {
               if (orders[i].items[j].products[k].marketVendorId == marketid) {
+                
+                orders[i].condominiumName = condo.name,
+                orders[i].condominiumCity = condo.city,
+                orders[i].condominiumState = condo.state,
+                orders[i].condominiumAddress = condo.address,
+                orders[i].condominiumNeighborhood = condo.neighborhood,
+                orders[i].condominiumCep = condo.cep,
+
                 returnOrders.push(orders[i]);
                 skip = true;
                 break;
