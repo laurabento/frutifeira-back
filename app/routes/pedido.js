@@ -148,7 +148,29 @@ router.route("/usuario/:id").get(authorize(), async (req, res) => {
   const id = req.params.id;
   try {
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      const orders = await Order.find({ userId: id });
+      var orders = await Order.find({ userId: id });
+      orders = JSON.parse(JSON.stringify(orders));
+
+      var condosIds = [];
+      orders.forEach((element) =>
+        condosIds.push(element.condominiumId)
+      );
+
+      var condos = await Condominium.findById({ _id: { $in: condosIds }  });
+
+      condos.forEach(function (condo) {
+        orders.forEach(function (ord) {
+          if (ord.condominiumId == condo._id.toString()) {
+            ord.condominiumName = condo.name;
+            ord.condominiumCity = condo.city;
+            ord.condominiumState = condo.state;
+            ord.condominiumAddress = condo.address;
+            ord.condominiumNeighborhood = condo.neighborhood;
+            ord.condominiumCep = condo.cep;
+          }
+        });
+      });
+
       if (!orders || orders.length === 0) {
         res.status(404).json({ error: "Pedidos não encontrados!" });
         return;
