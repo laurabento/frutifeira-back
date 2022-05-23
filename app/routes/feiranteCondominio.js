@@ -195,6 +195,117 @@ router.route("/condominio/:id").get(async (req, res) => {
   }
 });
 
+
+router.route("/condominio/:id/aprovado").get(async (req, res) => {
+  // #swagger.tags = ['FeiraCondominio']
+  const id = req.params.id;
+  try {
+    console.log(id);
+    var marketCondos = await MarketCondominium.find({ condominiumId: id, status: "Aprovado" });
+    console.log(marketCondos);
+    if (!marketCondos || marketCondos.length === 0) {
+      res
+        .status(404)
+        .json({ error: "Nenhum condomínio encontrado com esse Id!" });
+      return;
+    } else {
+      var marketVendorsIds = [];
+      marketCondos.forEach((element) =>
+        marketVendorsIds.push(element.marketVendorId)
+      );
+
+      var records = await MarketVendor.find({ _id: { $in: marketVendorsIds } });
+      records = JSON.parse(JSON.stringify(records));
+
+      for (var i = 0; i < records.length; i++) {
+        if (marketCondos.some((e) => e.marketVendorId === records[i]._id)) {
+          var market = marketCondos.filter(
+            (x) => x.marketVendorId === records[i]._id
+          );
+          records[i].status = market[0].status;
+          records[i].marketCondominiumId = market[0]._id;
+          records[i].approvalDate = market[0].approvalDate;
+        }
+      }
+      const prods = await Product.find({
+        marketVendorId: { $in: marketVendorsIds },
+      });
+      records = JSON.parse(JSON.stringify(records));
+      records.forEach(function (entry) {
+        entry.products = [];
+      });
+      records.forEach(function (entry) {
+        prods.forEach(function (prod) {
+          if (prod.marketVendorId == entry._id.toString()) {
+            var newProd = JSON.parse(JSON.stringify(prod));
+            entry.products.push(newProd);
+          }
+        });
+      });
+      res.status(200).json(records);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.route("/condominio/:id/pendente").get(async (req, res) => {
+  // #swagger.tags = ['FeiraCondominio']
+  const id = req.params.id;
+  try {
+    console.log(id);
+    var validStatus = [];
+    validStatus.push("Aprovado");
+    validStatus.push("Reprovado");
+    validStatus.push("Pendente");
+    var marketCondos = await MarketCondominium.find({ condominiumId: id, status: { $in: validStatus } });
+    console.log(marketCondos);
+    if (!marketCondos || marketCondos.length === 0) {
+      res
+        .status(404)
+        .json({ error: "Nenhum condomínio encontrado com esse Id!" });
+      return;
+    } else {
+      var marketVendorsIds = [];
+      marketCondos.forEach((element) =>
+        marketVendorsIds.push(element.marketVendorId)
+      );
+
+      var records = await MarketVendor.find({ _id: { $in: marketVendorsIds } });
+      records = JSON.parse(JSON.stringify(records));
+
+      for (var i = 0; i < records.length; i++) {
+        if (marketCondos.some((e) => e.marketVendorId === records[i]._id)) {
+          var market = marketCondos.filter(
+            (x) => x.marketVendorId === records[i]._id
+          );
+          records[i].status = market[0].status;
+          records[i].marketCondominiumId = market[0]._id;
+          records[i].approvalDate = market[0].approvalDate;
+        }
+      }
+      const prods = await Product.find({
+        marketVendorId: { $in: marketVendorsIds },
+      });
+      records = JSON.parse(JSON.stringify(records));
+      records.forEach(function (entry) {
+        entry.products = [];
+      });
+      records.forEach(function (entry) {
+        prods.forEach(function (prod) {
+          if (prod.marketVendorId == entry._id.toString()) {
+            var newProd = JSON.parse(JSON.stringify(prod));
+            entry.products.push(newProd);
+          }
+        });
+      });
+      res.status(200).json(records);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.route("/condominio/:id/produtos").get(async (req, res) => {
   // #swagger.tags = ['FeiraCondominio']
   const id = req.params.id;
