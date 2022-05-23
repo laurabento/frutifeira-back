@@ -31,21 +31,9 @@ router
     // #swagger.tags = ['Pedido']
     const id = req.params.id;
     const {
-      userId,
-      totalPrice,
-      payment,
-      scheduling,
-      items,
-      condominiumId,
       status,
     } = req.body;
     var order = {
-      userId,
-      totalPrice,
-      payment,
-      scheduling,
-      items,
-      condominiumId,
       status,
     };
     // lodash.omit(payment.cardNumber, "payment.cardNumber");
