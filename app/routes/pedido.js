@@ -156,7 +156,7 @@ router.route("/usuario/:id").get(authorize(), async (req, res) => {
         condosIds.push(element.condominiumId)
       );
 
-      var condos = await Condominium.findById({ _id: { $in: condosIds }  });
+      var condos = await Condominium.find({ _id: { $in: condosIds }  });
 
       condos.forEach(function (condo) {
         orders.forEach(function (ord) {
